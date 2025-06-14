@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>  {/* 🔥 wrapped in client provider */}
+        <Providers>{children}</Providers> 
       </body>
     </html>
   );

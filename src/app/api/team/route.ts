@@ -11,7 +11,6 @@ export async function GET() {
   const session = await auth();
   if (!session?.user?.email) return NextResponse.json(null);
 
-  // ✅ Use eq helper
   const [user] = await db
     .select()
     .from(participants)

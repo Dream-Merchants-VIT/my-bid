@@ -4,7 +4,7 @@ import { teams, participants } from '@/lib/db/schema';
 import { auth } from '../../../../../auth';
 import { Pool } from 'pg';
 import { randomUUID } from 'crypto';
-import { eq } from 'drizzle-orm'; // ✅ important!
+import { eq } from 'drizzle-orm';
 
 const db = drizzle(new Pool({ connectionString: process.env.DATABASE_URL }));
 
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
   }
 
   const { name } = await req.json();
-  const code = randomUUID().slice(0, 6); // 6-char join code
+  const code = randomUUID().slice(0, 6); 
 
   const [user] = await db
     .select()
