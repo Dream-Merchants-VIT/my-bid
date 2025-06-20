@@ -24,13 +24,8 @@
     "pg": "^8.16.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-<<<<<<< HEAD
-    "socket.io": "^4.8.1",
-    "socket.io-client": "^4.8.1"
-=======
     "ts-node": "^10.9.2",
     "ws": "^8.18.2"
->>>>>>> 5e6ea6dd5cbd0ca2afae73d1866b205c661d5e73
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
