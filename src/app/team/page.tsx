@@ -1,4 +1,4 @@
-// pages/team/page.tsx
+// app/team/page.tsx
 'use client';
 
 import { useState } from 'react';
