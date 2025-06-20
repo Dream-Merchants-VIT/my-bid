@@ -1,4 +1,4 @@
-import type { BiddingSession, Bid, TeamTokens } from "../../types"
+import type { BiddingSession, Bid, TeamTokens } from "../types"
 import { RAW_MATERIALS, BID_DURATION, LOW_STOCK_NOTIFICATIONS, INITIAL_TEAM_TOKENS } from "./constants"
 import { broadcastToRoom } from "./socket"
 

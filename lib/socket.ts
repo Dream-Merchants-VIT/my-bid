@@ -1,6 +1,6 @@
 import { Server as SocketIOServer } from "socket.io"
 import { createServer } from "http"
-import type { WebSocketMessage } from "../../types"
+import type { WebSocketMessage } from "../types"
 
 let io: SocketIOServer | undefined
 

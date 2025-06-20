@@ -2,7 +2,7 @@
 import NextAuth, {NextAuthOptions} from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { participants } from '@/lib/db/schema';
+import { participants } from '../../../../../lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { Pool } from 'pg';
 

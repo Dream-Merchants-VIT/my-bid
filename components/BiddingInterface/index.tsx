@@ -8,15 +8,10 @@ interface BiddingInterfaceProps {
   currentSession: BiddingSession | null
   highestBid: Bid | null
   teamTokens: TeamTokens
-  onBidPlaced: () => void
+  placeBid: (teamId: string, teamName: string, teamCode: string, amount: number) => Promise<void>
 }
 
-export default function BiddingInterface({
-  currentSession,
-  highestBid,
-  teamTokens,
-  onBidPlaced,
-}: BiddingInterfaceProps) {
+export default function BiddingInterface({ currentSession, highestBid, teamTokens, placeBid }: BiddingInterfaceProps) {
   const { data: session } = useSession()
   const [bidAmount, setBidAmount] = useState("")
   const [isPlacingBid, setIsPlacingBid] = useState(false)
@@ -29,7 +24,7 @@ export default function BiddingInterface({
     tokens: teamTokens["team-123"] || 1500,
   }
 
-  const placeBid = async () => {
+  const handlePlaceBid = async () => {
     if (!bidAmount || !currentSession) return
 
     const amount = Number.parseInt(bidAmount)
@@ -46,31 +41,14 @@ export default function BiddingInterface({
     }
 
     setIsPlacingBid(true)
+
     try {
-      const response = await fetch("/api/bid/place", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          teamId: currentTeam.id,
-          teamName: currentTeam.name,
-          teamCode: currentTeam.code,
-          amount,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (data.success) {
-        setBidAmount("")
-        onBidPlaced()
-      } else {
-        alert("Error placing bid: " + data.error)
-      }
+      await placeBid(currentTeam.id, currentTeam.name, currentTeam.code, amount)
+      setBidAmount("")
+      console.log("✅ Bid placed successfully")
     } catch (error) {
-      console.error("Error:", error)
-      alert("Error placing bid")
+      console.error("❌ Error placing bid:", error)
+      alert("Error placing bid: " + (error instanceof Error ? error.message : "Unknown error"))
     } finally {
       setIsPlacingBid(false)
     }
@@ -177,7 +155,7 @@ export default function BiddingInterface({
         </div>
 
         <button
-          onClick={placeBid}
+          onClick={handlePlaceBid}
           disabled={
             isPlacingBid || !bidAmount || !currentSession?.isActive || Number.parseInt(bidAmount) > currentTeam.tokens
           }

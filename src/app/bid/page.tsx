@@ -1,116 +1,24 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
-import { io, type Socket } from "socket.io-client"
 import BiddingInterface from "../../../components/BiddingInterface"
-import Timer from  "../../../components/Timer"
-import BidHistory from  "../../../components/BidHistory"
-import TokenTracker from  "../../../components/TokenTracker"
-import type { BiddingSession, Bid, WebSocketMessage, TeamTokens } from "../../../types"
+import Timer from "../../../components/Timer"
+import BidHistory from "../../../components/BidHistory"
+import TokenTracker from "../../../components/TokenTracker"
+import { useWebSocketBidding } from "../../../hooks/use-websocket-bidding"
 
 export default function BidPage() {
   const { data: session } = useSession()
-  const [socket, setSocket] = useState<Socket | null>(null)
-  const [currentSession, setCurrentSession] = useState<BiddingSession | null>(null)
-  const [currentBids, setCurrentBids] = useState<Bid[]>([])
-  const [highestBid, setHighestBid] = useState<Bid | null>(null)
-  const [remainingTime, setRemainingTime] = useState(0)
-  const [notifications, setNotifications] = useState<string[]>([])
-  const [teamTokens, setTeamTokens] = useState<TeamTokens>({})
-  const [isConnected, setIsConnected] = useState(false)
-
-  useEffect(() => {
-    if (!session) return
-
-    const initSocket = async () => {
-      await fetch("/api/socket")
-      const newSocket = io()
-
-      newSocket.on("connect", () => {
-        console.log("Connected to server")
-        setIsConnected(true)
-        setSocket(newSocket)
-        newSocket.emit("join-room", "bidding")
-      })
-
-      newSocket.on("disconnect", () => {
-        console.log("Disconnected from server")
-        setIsConnected(false)
-      })
-
-      newSocket.on("message", (message: WebSocketMessage) => {
-        console.log("Received message:", message)
-
-        switch (message.type) {
-          case "session_started":
-            setCurrentSession(message.data.session)
-            setCurrentBids([])
-            setHighestBid(null)
-            setRemainingTime(30)
-            setTeamTokens(message.data.teamTokens || {})
-            setNotifications((prev) => [...prev, `🚀 New auction started: ${message.data.session.materialName}`])
-            break
-
-          case "new_bid":
-            setCurrentBids((prev) => [...prev, message.data.bid])
-            setHighestBid(message.data.bid)
-            setTeamTokens(message.data.teamTokens || {})
-            setNotifications((prev) => [
-              ...prev,
-              `💰 New bid: ₹${message.data.bid.amount} by ${message.data.bid.teamName}`,
-            ])
-            break
-
-          case "session_ended":
-            setCurrentSession(null)
-            setRemainingTime(0)
-            setTeamTokens(message.data.teamTokens || {})
-            if (message.data.winningBid) {
-              setNotifications((prev) => [
-                ...prev,
-                `🏆 Auction ended! Winner: ${message.data.winningBid.teamName} (${message.data.winningBid.teamCode}) - ₹${message.data.winningBid.amount}`,
-              ])
-            } else {
-              setNotifications((prev) => [...prev, `⏰ Auction ended with no bids`])
-            }
-            break
-
-          case "timer_update":
-            setRemainingTime(message.data.remainingTime)
-            break
-
-          case "low_stock_alert":
-            setNotifications((prev) => [
-              ...prev,
-              `⚠️ Low stock alert! Only ${message.data.remainingBundles} bundles remaining!`,
-            ])
-            break
-        }
-      })
-    }
-
-    initSocket()
-
-    // Fetch current session data
-    fetch("/api/bid/current")
-      .then((res) => res.json())
-      .then((data) => {
-        setCurrentSession(data.session)
-        setCurrentBids(data.bids || [])
-        setHighestBid(data.highestBid)
-        setTeamTokens(data.teamTokens || {})
-      })
-      .catch((error) => {
-        console.error("Error fetching current session:", error)
-      })
-
-    return () => {
-      if (socket) {
-        socket.disconnect()
-      }
-    }
-  }, [session])
+  const {
+    session: currentSession,
+    bids: currentBids,
+    highestBid,
+    remainingTime,
+    notifications,
+    teamTokens,
+    isConnected,
+    placeBid,
+  } = useWebSocketBidding()
 
   if (!session) {
     return (
@@ -138,7 +46,9 @@ export default function BidPage() {
               <div
                 className={`flex items-center space-x-2 px-3 py-1 rounded-full ${isConnected ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
               >
-                <div className={`w-2 h-2 rounded-full ${isConnected ? "bg-green-500" : "bg-red-500"}`}></div>
+                <div
+                  className={`w-2 h-2 rounded-full ${isConnected ? "bg-green-500 animate-pulse" : "bg-red-500"}`}
+                ></div>
                 <span className="text-sm font-medium">{isConnected ? "Connected" : "Disconnected"}</span>
               </div>
             </div>
@@ -153,7 +63,7 @@ export default function BidPage() {
             {notifications.slice(-3).map((notification, index) => (
               <div
                 key={index}
-                className="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 px-4 py-3 rounded-r-lg shadow-sm"
+                className="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 px-4 py-3 rounded-r-lg shadow-sm animate-pulse"
               >
                 {notification}
               </div>
@@ -201,7 +111,7 @@ export default function BidPage() {
               currentSession={currentSession}
               highestBid={highestBid}
               teamTokens={teamTokens}
-              onBidPlaced={() => {}}
+              placeBid={placeBid}
             />
           </div>
 

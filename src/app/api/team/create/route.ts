@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { teams, participants } from '@/lib/db/schema';
+import { teams, participants } from '../../../../../lib/db/schema';
 import { auth } from '../../../../../auth';
 import { Pool } from 'pg';
 import { randomUUID } from 'crypto';

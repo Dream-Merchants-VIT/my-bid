@@ -1,7 +1,7 @@
 // app/api/team/leave/route.ts
 import { NextResponse } from 'next/server';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { participants } from '@/lib/db/schema';
+import { participants } from '../../../../../lib/db/schema';
 import { auth } from '../../../../../auth';
 import { Pool } from 'pg';
 import { eq } from 'drizzle-orm';
