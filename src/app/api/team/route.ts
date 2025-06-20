@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { participants, teams } from '@/lib/db/schema';
+import { participants, teams } from '../../../../lib/db/schema';
 import { auth } from '../../../../auth';
 import { Pool } from 'pg';
 import { eq } from 'drizzle-orm';
