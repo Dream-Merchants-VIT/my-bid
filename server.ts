@@ -233,6 +233,23 @@ app.prepare().then(() => {
     const clientIP = req.socket.remoteAddress
     console.log(`🔌 Client connected from ${clientIP}`)
 
+    // Set up ping/pong for connection health
+    let isAlive = true
+    ws.on("pong", () => {
+      isAlive = true
+    })
+
+    // Send ping every 30 seconds
+    const pingInterval = setInterval(() => {
+      if (!isAlive) {
+        console.log(`💀 Terminating dead connection from ${clientIP}`)
+        ws.terminate()
+        return
+      }
+      isAlive = false
+      ws.ping()
+    }, 30000)
+
     // Send current data to new client
     const currentData = biddingManager.getCurrentData()
     ws.send(
@@ -246,7 +263,7 @@ app.prepare().then(() => {
     ws.on("message", (message) => {
       try {
         const data = JSON.parse(message.toString())
-        console.log("📨 Received message:", data.type, data)
+        console.log("📨 Received message:", data.type)
 
         switch (data.type) {
           case "start_session":
@@ -303,17 +320,23 @@ app.prepare().then(() => {
             )
             console.log("📤 Sent current data to client")
             break
+
+          case "ping":
+            ws.send(JSON.stringify({ type: "pong" }))
+            break
         }
       } catch (error) {
         console.error("❌ Error processing WebSocket message:", error)
       }
     })
 
-    ws.on("close", () => {
-      console.log(`🔌 Client disconnected from ${clientIP}`)
+    ws.on("close", (code, reason) => {
+      clearInterval(pingInterval)
+      console.log(`🔌 Client disconnected from ${clientIP} (${code}: ${reason})`)
     })
 
     ws.on("error", (error) => {
+      clearInterval(pingInterval)
       console.error("❌ WebSocket error:", error)
     })
   })

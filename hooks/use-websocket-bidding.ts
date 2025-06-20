@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import type { BiddingSession, Bid, TeamTokens } from "../types"
+import { useState, useEffect, useRef, useCallback } from "react"
+import type { BiddingSession, Bid, TeamTokens } from "@/types"
 
 interface WebSocketBiddingData {
   session: BiddingSession | null
@@ -26,28 +26,55 @@ export function useWebSocketBidding() {
 
   const wsRef = useRef<WebSocket | null>(null)
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const reconnectAttemptsRef = useRef(0)
+  const maxReconnectAttempts = 5
+  const isConnectingRef = useRef(false)
 
-  const connect = () => {
+  const connect = useCallback(() => {
+    // Prevent multiple connection attempts
+    if (isConnectingRef.current || (wsRef.current && wsRef.current.readyState === WebSocket.CONNECTING)) {
+      return
+    }
+
+    // Clean up existing connection
+    if (wsRef.current) {
+      wsRef.current.close()
+      wsRef.current = null
+    }
+
     try {
-      // Use the correct WebSocket URL for the custom server
+      isConnectingRef.current = true
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:"
       const wsUrl = `${protocol}//${window.location.host}`
 
-      console.log("Attempting to connect to WebSocket:", wsUrl)
+      console.log("🔄 Attempting WebSocket connection to:", wsUrl)
       wsRef.current = new WebSocket(wsUrl)
 
+      // Set a connection timeout
+      const connectionTimeout = setTimeout(() => {
+        if (wsRef.current && wsRef.current.readyState === WebSocket.CONNECTING) {
+          console.log("⏰ WebSocket connection timeout")
+          wsRef.current.close()
+        }
+      }, 10000) // 10 second timeout
+
       wsRef.current.onopen = () => {
-        console.log("✅ Connected to WebSocket")
+        clearTimeout(connectionTimeout)
+        isConnectingRef.current = false
+        reconnectAttemptsRef.current = 0
+        console.log("✅ WebSocket connected successfully")
         setData((prev) => ({ ...prev, isConnected: true }))
 
-        // Request current data
-        wsRef.current?.send(JSON.stringify({ type: "get_current_data" }))
+        // Request current data after connection
+        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+          wsRef.current.send(JSON.stringify({ type: "get_current_data" }))
+        }
       }
 
       wsRef.current.onmessage = (event) => {
         try {
           const message = JSON.parse(event.data)
-          console.log("📨 Received WebSocket message:", message)
+          console.log("📨 Received:", message.type)
 
           switch (message.type) {
             case "initial_data":
@@ -69,7 +96,7 @@ export function useWebSocketBidding() {
                 highestBid: null,
                 remainingTime: 30,
                 teamTokens: message.data.teamTokens || {},
-                notifications: [...prev.notifications, `🚀 New auction started: ${message.data.session.materialName}`],
+                notifications: [...prev.notifications, `🚀 New auction: ${message.data.session.materialName}`],
               }))
               break
 
@@ -81,7 +108,7 @@ export function useWebSocketBidding() {
                 teamTokens: message.data.teamTokens || {},
                 notifications: [
                   ...prev.notifications,
-                  `💰 New bid: ₹${message.data.bid.amount} by ${message.data.bid.teamName}`,
+                  `💰 ₹${message.data.bid.amount} by ${message.data.bid.teamName}`,
                 ],
               }))
               break
@@ -95,7 +122,7 @@ export function useWebSocketBidding() {
                 notifications: [
                   ...prev.notifications,
                   message.data.winningBid
-                    ? `🏆 Auction ended! Winner: ${message.data.winningBid.teamName} (${message.data.winningBid.teamCode}) - ₹${message.data.winningBid.amount}`
+                    ? `🏆 Winner: ${message.data.winningBid.teamName} - ₹${message.data.winningBid.amount}`
                     : `⏰ Auction ended with no bids`,
                 ],
               }))
@@ -109,29 +136,41 @@ export function useWebSocketBidding() {
               break
           }
         } catch (error) {
-          console.error("❌ Error parsing WebSocket message:", error)
+          console.error("❌ Error parsing message:", error)
         }
       }
 
       wsRef.current.onclose = (event) => {
-        console.log("🔌 WebSocket connection closed:", event.code, event.reason)
+        clearTimeout(connectionTimeout)
+        isConnectingRef.current = false
+        console.log(`🔌 WebSocket closed: ${event.code} ${event.reason}`)
         setData((prev) => ({ ...prev, isConnected: false }))
 
-        // Attempt to reconnect after 3 seconds
-        reconnectTimeoutRef.current = setTimeout(() => {
-          console.log("🔄 Attempting to reconnect...")
-          connect()
-        }, 3000)
+        // Only attempt reconnection if it wasn't a clean close and we haven't exceeded max attempts
+        if (event.code !== 1000 && reconnectAttemptsRef.current < maxReconnectAttempts) {
+          reconnectAttemptsRef.current++
+          const delay = Math.min(1000 * Math.pow(2, reconnectAttemptsRef.current), 10000) // Exponential backoff
+          console.log(`🔄 Reconnecting in ${delay}ms (attempt ${reconnectAttemptsRef.current}/${maxReconnectAttempts})`)
+
+          reconnectTimeoutRef.current = setTimeout(() => {
+            connect()
+          }, delay)
+        } else if (reconnectAttemptsRef.current >= maxReconnectAttempts) {
+          console.log("❌ Max reconnection attempts reached")
+        }
       }
 
       wsRef.current.onerror = (error) => {
+        clearTimeout(connectionTimeout)
+        isConnectingRef.current = false
         console.error("❌ WebSocket error:", error)
         setData((prev) => ({ ...prev, isConnected: false }))
       }
     } catch (error) {
-      console.error("❌ Error creating WebSocket connection:", error)
+      isConnectingRef.current = false
+      console.error("❌ Error creating WebSocket:", error)
     }
-  }
+  }, [])
 
   useEffect(() => {
     connect()
@@ -141,53 +180,55 @@ export function useWebSocketBidding() {
         clearTimeout(reconnectTimeoutRef.current)
       }
       if (wsRef.current) {
-        wsRef.current.close()
+        wsRef.current.close(1000, "Component unmounting") // Clean close
       }
     }
-  }, [])
+  }, [connect])
 
-  const startSession = (materialId: string, bundleType: "large" | "small", totalBundles: number): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
-        reject(new Error("WebSocket not connected"))
-        return
-      }
-
-      const handleResponse = (event: MessageEvent) => {
-        try {
-          const message = JSON.parse(event.data)
-          if (message.type === "session_start_response") {
-            wsRef.current?.removeEventListener("message", handleResponse)
-            if (message.success) {
-              resolve()
-            } else {
-              reject(new Error(message.error))
-            }
-          }
-        } catch (error) {
-          reject(error)
+  const startSession = useCallback(
+    (materialId: string, bundleType: "large" | "small", totalBundles: number): Promise<void> => {
+      return new Promise((resolve, reject) => {
+        if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
+          reject(new Error("WebSocket not connected"))
+          return
         }
-      }
 
-      wsRef.current.addEventListener("message", handleResponse)
-      wsRef.current.send(
-        JSON.stringify({
-          type: "start_session",
-          materialId,
-          bundleType,
-          totalBundles,
-        }),
-      )
+        const handleResponse = (event: MessageEvent) => {
+          try {
+            const message = JSON.parse(event.data)
+            if (message.type === "session_start_response") {
+              wsRef.current?.removeEventListener("message", handleResponse)
+              if (message.success) {
+                resolve()
+              } else {
+                reject(new Error(message.error))
+              }
+            }
+          } catch (error) {
+            reject(error)
+          }
+        }
 
-      // Timeout after 10 seconds
-      setTimeout(() => {
-        wsRef.current?.removeEventListener("message", handleResponse)
-        reject(new Error("Request timeout"))
-      }, 10000)
-    })
-  }
+        wsRef.current.addEventListener("message", handleResponse)
+        wsRef.current.send(
+          JSON.stringify({
+            type: "start_session",
+            materialId,
+            bundleType,
+            totalBundles,
+          }),
+        )
 
-  const placeBid = (teamId: string, teamName: string, teamCode: string, amount: number): Promise<void> => {
+        setTimeout(() => {
+          wsRef.current?.removeEventListener("message", handleResponse)
+          reject(new Error("Request timeout"))
+        }, 10000)
+      })
+    },
+    [],
+  )
+
+  const placeBid = useCallback((teamId: string, teamName: string, teamCode: string, amount: number): Promise<void> => {
     return new Promise((resolve, reject) => {
       if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
         reject(new Error("WebSocket not connected"))
@@ -221,13 +262,12 @@ export function useWebSocketBidding() {
         }),
       )
 
-      // Timeout after 10 seconds
       setTimeout(() => {
         wsRef.current?.removeEventListener("message", handleResponse)
         reject(new Error("Request timeout"))
       }, 10000)
     })
-  }
+  }, [])
 
   return {
     ...data,
