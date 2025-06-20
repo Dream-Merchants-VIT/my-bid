@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "tsx server.ts",
-    "dev:next": "next dev --turbopack",
+    "dev": "concurrently \"tsx websocket-server.ts\" \"tsx server.ts\"",
+    "dev:ws": "tsx websocket-server.ts",
+    "dev:next": "tsx server.ts",
     "build": "next build",
-    "start": "NODE_ENV=production tsx server.ts",
+    "start": "NODE_ENV=production concurrently \"tsx websocket-server.ts\" \"tsx server.ts\"",
     "lint": "next lint"
   },
   "dependencies": {
@@ -34,12 +35,13 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
+    "concurrently": "^8.2.2",
     "drizzle-kit": "^0.31.1",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
     "postcss": "^8.5.4",
     "tailwindcss": "^4.1.8",
-    "tsx": "^4.20.3",
+    "tsx": "^4.7.0",
     "typescript": "^5.8.3"
   }
 }

@@ -26,37 +26,60 @@ export function useWebSocketBidding() {
 
   const wsRef = useRef<WebSocket | null>(null)
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const pingIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const reconnectAttemptsRef = useRef(0)
-  const maxReconnectAttempts = 5
+  const maxReconnectAttempts = 10
   const isConnectingRef = useRef(false)
 
+  const cleanup = useCallback(() => {
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current)
+      reconnectTimeoutRef.current = null
+    }
+    if (pingIntervalRef.current) {
+      clearInterval(pingIntervalRef.current)
+      pingIntervalRef.current = null
+    }
+    if (wsRef.current) {
+      wsRef.current.close(1000, "Cleanup")
+      wsRef.current = null
+    }
+    isConnectingRef.current = false
+  }, [])
+
+  const startPingInterval = useCallback(() => {
+    if (pingIntervalRef.current) {
+      clearInterval(pingIntervalRef.current)
+    }
+
+    pingIntervalRef.current = setInterval(() => {
+      if (wsRef.current?.readyState === WebSocket.OPEN) {
+        wsRef.current.send(JSON.stringify({ type: "ping" }))
+      }
+    }, 30000) // Ping every 30 seconds
+  }, [])
+
   const connect = useCallback(() => {
-    // Prevent multiple connection attempts
-    if (isConnectingRef.current || (wsRef.current && wsRef.current.readyState === WebSocket.CONNECTING)) {
+    if (isConnectingRef.current) {
       return
     }
 
-    // Clean up existing connection
-    if (wsRef.current) {
-      wsRef.current.close()
-      wsRef.current = null
-    }
+    cleanup()
 
     try {
       isConnectingRef.current = true
-      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:"
-      const wsUrl = `${protocol}//${window.location.host}`
+      // Connect to dedicated WebSocket server on port 3001
+      const wsUrl = `ws://localhost:3001`
 
-      console.log("🔄 Attempting WebSocket connection to:", wsUrl)
+      console.log("🔄 Connecting to WebSocket server:", wsUrl)
       wsRef.current = new WebSocket(wsUrl)
 
-      // Set a connection timeout
       const connectionTimeout = setTimeout(() => {
-        if (wsRef.current && wsRef.current.readyState === WebSocket.CONNECTING) {
-          console.log("⏰ WebSocket connection timeout")
+        if (wsRef.current?.readyState === WebSocket.CONNECTING) {
+          console.log("⏰ Connection timeout")
           wsRef.current.close()
         }
-      }, 10000) // 10 second timeout
+      }, 10000)
 
       wsRef.current.onopen = () => {
         clearTimeout(connectionTimeout)
@@ -65,8 +88,11 @@ export function useWebSocketBidding() {
         console.log("✅ WebSocket connected successfully")
         setData((prev) => ({ ...prev, isConnected: true }))
 
-        // Request current data after connection
-        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        // Start ping interval
+        startPingInterval()
+
+        // Request current data
+        if (wsRef.current?.readyState === WebSocket.OPEN) {
           wsRef.current.send(JSON.stringify({ type: "get_current_data" }))
         }
       }
@@ -74,9 +100,12 @@ export function useWebSocketBidding() {
       wsRef.current.onmessage = (event) => {
         try {
           const message = JSON.parse(event.data)
-          console.log("📨 Received:", message.type)
 
           switch (message.type) {
+            case "pong":
+              // Keep-alive response
+              break
+
             case "initial_data":
             case "current_data_response":
               setData((prev) => ({
@@ -146,17 +175,20 @@ export function useWebSocketBidding() {
         console.log(`🔌 WebSocket closed: ${event.code} ${event.reason}`)
         setData((prev) => ({ ...prev, isConnected: false }))
 
-        // Only attempt reconnection if it wasn't a clean close and we haven't exceeded max attempts
+        if (pingIntervalRef.current) {
+          clearInterval(pingIntervalRef.current)
+          pingIntervalRef.current = null
+        }
+
+        // Reconnect if not a clean close and under max attempts
         if (event.code !== 1000 && reconnectAttemptsRef.current < maxReconnectAttempts) {
           reconnectAttemptsRef.current++
-          const delay = Math.min(1000 * Math.pow(2, reconnectAttemptsRef.current), 10000) // Exponential backoff
+          const delay = Math.min(1000 * reconnectAttemptsRef.current, 5000)
           console.log(`🔄 Reconnecting in ${delay}ms (attempt ${reconnectAttemptsRef.current}/${maxReconnectAttempts})`)
 
           reconnectTimeoutRef.current = setTimeout(() => {
             connect()
           }, delay)
-        } else if (reconnectAttemptsRef.current >= maxReconnectAttempts) {
-          console.log("❌ Max reconnection attempts reached")
         }
       }
 
@@ -170,20 +202,12 @@ export function useWebSocketBidding() {
       isConnectingRef.current = false
       console.error("❌ Error creating WebSocket:", error)
     }
-  }, [])
+  }, [cleanup, startPingInterval])
 
   useEffect(() => {
     connect()
-
-    return () => {
-      if (reconnectTimeoutRef.current) {
-        clearTimeout(reconnectTimeoutRef.current)
-      }
-      if (wsRef.current) {
-        wsRef.current.close(1000, "Component unmounting") // Clean close
-      }
-    }
-  }, [connect])
+    return cleanup
+  }, [connect, cleanup])
 
   const startSession = useCallback(
     (materialId: string, bundleType: "large" | "small", totalBundles: number): Promise<void> => {
