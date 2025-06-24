@@ -12,7 +12,7 @@ interface BiddingInterfaceProps {
 }
 
 export default function BiddingInterface({ currentSession, highestBid, teamTokens, placeBid }: BiddingInterfaceProps) {
-  const { data: session } = useSession()
+  //const { data: session } = useSession()
   const [bidAmount, setBidAmount] = useState("")
   const [isPlacingBid, setIsPlacingBid] = useState(false)
 

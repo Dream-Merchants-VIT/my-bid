@@ -19,6 +19,11 @@ export const authOptions: NextAuthOptions =({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+
+  session: {
+    strategy: "jwt",
+  },
+
   callbacks: {
     async signIn({ user }) {
       if (!user.email) return false;
@@ -38,8 +43,25 @@ export const authOptions: NextAuthOptions =({
 
       return true;
     },
+
+    async jwt({ token, user }) {
+      // Persist user info in the token
+      if (user) {
+        token.name = user.name;
+        token.email = user.email;
+      }
+      return token;
+    },
+
     async session({ session, token }) {
-      // Optional: Attach DB user info to the session
+      // Attach token data to session
+      if (token) {
+        session.user = {
+          ...session.user,
+          name: token.name,
+          email: token.email,
+        };
+      }
       return session;
     },
   },

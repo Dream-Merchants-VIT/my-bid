@@ -38,7 +38,7 @@ export default function HomePage() {
             <>
               <p className="text-sm">Hi, {session.user?.name}</p>
               <button
-                onClick={() => signOut()}
+                onClick={() => signOut({ callbackUrl: '/', redirect: true })}
                 className="hover:text-red-400"
               >
                 Sign Out
@@ -87,7 +87,7 @@ export default function HomePage() {
               <button
                 onClick={() => {
                   setIsOpen(false);
-                  signOut();
+                  signOut({ callbackUrl: '/', redirect: true });
                 }}
                 className="hover:text-red-400 text-left"
               >
