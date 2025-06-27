@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"tsx websocket-server.ts\" \"tsx server.ts\"",
+    "dev": "concurrently \"next dev\" \"tsx websocket-server.ts\"",
     "dev:ws": "tsx websocket-server.ts",
-    "dev:next": "tsx server.ts",
+    "dev:next": "next dev",
     "build": "next build",
     "start": "NODE_ENV=production concurrently \"tsx websocket-server.ts\" \"tsx server.ts\"",
     "lint": "next lint"
@@ -19,7 +19,7 @@
     "drizzle-orm": "^0.44.2",
     "express": "^4.18.2",
     "lucide-react": "^0.515.0",
-    "next": "15.3.3",
+    "next": "^15.3.4",
     "next-auth": "^4.24.11",
     "pg": "^8.16.0",
     "react": "^19.0.0",
