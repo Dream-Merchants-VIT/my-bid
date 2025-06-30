@@ -1,4 +1,4 @@
-import { pgTable, text, uuid, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, text, uuid, timestamp, integer } from 'drizzle-orm/pg-core';
 
 // 🧍 participants table
 export const participants = pgTable('participants', {
@@ -14,4 +14,5 @@ export const teams = pgTable('teams', {
   name: text('name').notNull(),
   code: text('code').unique().notNull(),
   ownerId: uuid('owner_id').notNull(),
+  tokens: integer('tokens').default(0)
 });
