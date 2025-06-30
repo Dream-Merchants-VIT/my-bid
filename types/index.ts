@@ -58,6 +58,7 @@ export interface WebSocketMessage {
 export interface SessionStartedData {
   session: BiddingSession
   teamTokens: TeamTokens
+  material: RawMaterial
 }
 
 export interface NewBidData {

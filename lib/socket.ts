@@ -19,7 +19,7 @@ export function getSocketIOServer() {
 
       socket.on("join-room", (room: string) => {
         socket.join(room)
-        console.log(`Socket ${socket.id} joined room: ${room}`)
+        //console.log(Socket ${socket.id} joined room: ${room})
       })
 
       socket.on("disconnect", () => {
@@ -33,4 +33,4 @@ export function getSocketIOServer() {
 export function broadcastToRoom(room: string, message: WebSocketMessage) {
   const socketServer = getSocketIOServer()
   socketServer.to(room).emit("message", message)
-}
+} 
