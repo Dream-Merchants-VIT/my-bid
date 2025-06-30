@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback } from "react"
-import type { BiddingSession, Bid, TeamTokens } from "../types"
+import type { BiddingSession, Bid, TeamTokens } from "../types/index"
 
 interface WebSocketBiddingData {
   session: BiddingSession | null
