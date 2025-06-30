@@ -14,5 +14,5 @@ export const teams = pgTable('teams', {
   name: text('name').notNull(),
   code: text('code').unique().notNull(),
   ownerId: uuid('owner_id').notNull(),
-  tokens: integer('tokens').default(0)
+  tokens: integer('tokens').notNull().default(1500),
 });
