@@ -2,6 +2,13 @@ import { WebSocketServer, WebSocket } from "ws"
 import { createServer } from "http"
 import { RAW_MATERIALS, BID_DURATION, INITIAL_TEAM_TOKENS } from "./lib/constants.js"
 import type { BiddingSession, Bid, TeamTokens } from "./types/index.js"
+import { Pool } from "pg"
+import { drizzle } from "drizzle-orm/node-postgres"
+import { eq, sql} from "drizzle-orm"
+import { teams as teamsTable } from "./lib/db/schema"
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL })
+const db = drizzle(pool)
 
 // WebSocket Bidding Manager
 class BiddingManager {
@@ -163,7 +170,7 @@ class BiddingManager {
     return this.currentBids.reduce((highest, current) => (current.amount > highest.amount ? current : highest))
   }
 
-  private endCurrentSession() {
+  private async endCurrentSession() {
     if (this.timer) {
       clearInterval(this.timer)
       this.timer = null
@@ -174,8 +181,17 @@ class BiddingManager {
       const winningBid = this.getCurrentHighestBid()
 
       if (winningBid) {
+        // 1. Update in-memory token balance
         this.teamTokens[winningBid.teamId] -= winningBid.amount
         this.currentSession.remainingBundles -= 1
+
+        // 2. Update token balance in database
+        await db
+          .update(teamsTable)
+          .set({
+            tokens: sql`${teamsTable.tokens} - ${winningBid.amount}`,
+          })
+          .where(eq(teamsTable.id, winningBid.teamId))
       }
 
       this.broadcast({

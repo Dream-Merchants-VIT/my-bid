@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { RAW_MATERIALS } from "../../../../lib/constants"
-import { useWebSocketBidding } from "../../../../hooks/use-websocket-bidding"
+import { useWebSocketBidding } from "../../../../hooks/use-ws-bidding"
 
 export default function AdminBidPage() {
   const [selectedMaterial, setSelectedMaterial] = useState("")

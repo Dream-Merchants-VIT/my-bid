@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import type { BiddingSession, Bid, TeamTokens } from "../../types"
 
@@ -12,20 +12,36 @@ interface BiddingInterfaceProps {
 }
 
 export default function BiddingInterface({ currentSession, highestBid, teamTokens, placeBid }: BiddingInterfaceProps) {
-  //const { data: session } = useSession()
+  const { data: session } = useSession()
   const [bidAmount, setBidAmount] = useState("")
   const [isPlacingBid, setIsPlacingBid] = useState(false)
 
-  // Mock team data - replace with actual team data from your auth/database
-  const currentTeam = {
-    id: "team-123",
-    name: "Sample Team",
-    code: "ST001",
-    tokens: teamTokens["team-123"] || 1500,
-  }
+  const [currentTeam, setCurrentTeam] = useState<{
+    id: string
+    name: string
+    code: string
+    tokens: number
+  } | null>(null)
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const res = await fetch("/api/current-team")
+        if (!res.ok) throw new Error("Failed to fetch team")
+        const team = await res.json()
+        setCurrentTeam(team)
+      } catch (err) {
+        console.error("Error loading team", err)
+      }
+    }
+
+    if (session?.user) {
+      fetchTeam()
+    }
+  }, [session])
 
   const handlePlaceBid = async () => {
-    if (!bidAmount || !currentSession) return
+    if (!bidAmount || !currentSession || !currentTeam) return
 
     const amount = Number.parseInt(bidAmount)
     const minimumBid = highestBid ? highestBid.amount + 1 : currentSession.basePrice
@@ -62,6 +78,14 @@ export default function BiddingInterface({ currentSession, highestBid, teamToken
           <h2 className="text-2xl font-semibold text-black mb-2">No Active Auction</h2>
           <p className="text-gray-600">Wait for the admin to start a new bidding session</p>
         </div>
+      </div>
+    )
+  }
+
+  if (!currentTeam) {
+    return (
+      <div className="bg-white rounded-xl shadow-lg p-8 text-center text-black">
+        ⏳ Loading your team...
       </div>
     )
   }

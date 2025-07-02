@@ -5,7 +5,7 @@ import BiddingInterface from "../../../components/BiddingInterface"
 import Timer from "../../../components/Timer"
 import BidHistory from "../../../components/BidHistory"
 import TokenTracker from "../../../components/TokenTracker"
-import { useWebSocketBidding } from "../../../hooks/use-websocket-bidding"
+import { useWebSocketBidding } from "../../../hooks/use-ws-bidding"
 
 export default function BidPage() {
   const { data: session } = useSession()
@@ -102,7 +102,7 @@ export default function BidPage() {
               </div>
             )}
 
-            <TokenTracker teamTokens={teamTokens} />
+            <TokenTracker/>
           </div>
 
           {/* Bidding Interface */}
