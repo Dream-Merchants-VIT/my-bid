@@ -341,10 +341,10 @@ app.prepare().then(() => {
     })
   })
 
-  httpServer.listen(port, () => {
-    console.log(`🚀 Server running on http://localhost:${port}`)
-    console.log(`📡 WebSocket server ready on ws://localhost:${port}`)
-    console.log(`👨‍💼 Admin portal: http://localhost:${port}/admin/bid`)
-    console.log(`👥 User portal: http://localhost:${port}/bid`)
-  })
+  httpServer.listen(port, "0.0.0.0", () => {
+  console.log(`🚀 Server running on http://localhost:${port}`)
+  console.log(`📡 WebSocket server ready on ws://localhost:${port}`)
+  console.log(`👨‍💼 Admin portal: http://localhost:${port}/admin/bid`)
+  console.log(`👥 User portal: http://localhost:${port}/bid`)
+})
 })
