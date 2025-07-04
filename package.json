@@ -7,7 +7,9 @@
     "dev:ws": "tsx websocket-server.ts",
     "dev:next": "next dev",
     "build": "next build",
-    "start": "NODE_ENV=production concurrently \"tsx websocket-server.ts\" \"tsx server.ts\"",
+    "start": "NODE_ENV=production concurrently \"next start\" \"tsx websocket-server.ts\"",
+    "start:next": "next start",
+    "start:ws": "tsx websocket-server.ts",
     "lint": "next lint"
   },
   "dependencies": {
