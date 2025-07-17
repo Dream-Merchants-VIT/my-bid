@@ -68,8 +68,8 @@ export function useWebSocketBidding() {
 
     try {
       isConnectingRef.current = true
-      // Connect to dedicated WebSocket server on port 3001
-      const wsUrl = `ws://localhost:3001`
+      // Connect to WebSocket server using environment variable
+      const wsUrl = process.env.WS_URL || `ws://localhost:3001`
 
       console.log("🔄 Connecting to WebSocket server:", wsUrl)
       wsRef.current = new WebSocket(wsUrl)
