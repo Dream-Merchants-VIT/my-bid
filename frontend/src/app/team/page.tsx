@@ -59,6 +59,15 @@ export default function TeamPage() {
             >
               Go to Bidding
             </button>
+
+              <br>
+              </br>
+            <button
+              onClick={() => router.push('/cart')}
+              className="bg-purple-600 text-white px-4 py-2 rounded"
+            >
+              View cart
+            </button>
          
          <br>
          </br>
