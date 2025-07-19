@@ -1,11 +1,14 @@
 import { WebSocketServer, WebSocket } from "ws"
 import { createServer } from "http"
 import { RAW_MATERIALS, BID_DURATION, INITIAL_TEAM_TOKENS } from "./lib/constants.js"
-import type { BiddingSession, Bid, TeamTokens } from "./types/index.js"
+import type { BiddingSession, Bid, TeamTokens } from "../types/index.js"
+import dotenv from "dotenv";
 import { Pool } from "pg"
 import { drizzle } from "drizzle-orm/node-postgres"
 import { eq, sql} from "drizzle-orm"
 import { teams as teamsTable } from "./lib/db/schema"
+
+dotenv.config();
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 const db = drizzle(pool)

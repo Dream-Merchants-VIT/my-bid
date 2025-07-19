@@ -1,6 +1,12 @@
 import type { BiddingSession, Bid, TeamTokens } from "../../types"
 import { RAW_MATERIALS, BID_DURATION, LOW_STOCK_NOTIFICATIONS, INITIAL_TEAM_TOKENS } from "../lib/constants"
 import { broadcastToRoom } from "../lib/socket"
+import { teams } from "../lib/db/schema"
+import { drizzle } from 'drizzle-orm/node-postgres'
+import { Pool } from 'pg'
+import { eq } from "drizzle-orm"
+
+const db = drizzle(new Pool({ connectionString: process.env.DATABASE_URL }));
 
 class BiddingManager {
   private currentSession: BiddingSession | null = null
@@ -138,7 +144,7 @@ class BiddingManager {
     return this.currentBids.reduce((highest, current) => (current.amount > highest.amount ? current : highest))
   }
 
-  private endCurrentSession() {
+  private async endCurrentSession() {
     if (this.timer) {
       clearInterval(this.timer)
       this.timer = null
@@ -150,8 +156,14 @@ class BiddingManager {
 
       // Deduct tokens from winning team
       if (winningBid) {
-        this.teamTokens[winningBid.teamId] -= winningBid.amount
+        const newTokenValue = this.getTeamTokens(winningBid.teamId) - winningBid.amount
+        this.teamTokens[winningBid.teamId] = newTokenValue
         this.currentSession.remainingBundles -= 1
+
+        // Update tokens in DB
+        await db.update(teams)
+          .set({ tokens: newTokenValue })
+          .where(eq(teams.id, winningBid.teamId))
       }
 
       broadcastToRoom("bidding", {
