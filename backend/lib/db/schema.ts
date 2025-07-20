@@ -1,5 +1,4 @@
 import { pgTable, text, uuid, timestamp, integer } from 'drizzle-orm/pg-core';
-import { RAW_MATERIALS } from '../constants';
 
 // 🧍 participants table
 export const participants = pgTable('participants', {

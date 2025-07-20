@@ -2,6 +2,7 @@ import type { BiddingSession, Bid, TeamTokens } from "../../types"
 import { RAW_MATERIALS, BID_DURATION, LOW_STOCK_NOTIFICATIONS, INITIAL_TEAM_TOKENS } from "../lib/constants"
 import { broadcastToRoom } from "../lib/socket"
 import { teams } from "../lib/db/schema"
+import { wonItems } from "../lib/db/schema"
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { Pool } from 'pg'
 import { eq } from "drizzle-orm"
@@ -164,6 +165,17 @@ class BiddingManager {
         await db.update(teams)
           .set({ tokens: newTokenValue })
           .where(eq(teams.id, winningBid.teamId))
+
+        // Insert into wonItems table
+        await db.insert(wonItems).values({
+          teamId: winningBid.teamId,
+          itemId: this.currentSession.materialId,
+          amountPurchased: winningBid.amount,
+          baseAmount: this.currentSession.basePrice,
+          quantity: 1, // Each session gives only 1 bundle per win
+        });
+
+        console.log("WonItems updated");
       }
 
       broadcastToRoom("bidding", {
