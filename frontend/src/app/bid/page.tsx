@@ -6,6 +6,7 @@ import Timer from "../../../components/Timer"
 import BidHistory from "../../../components/BidHistory"
 import TokenTracker from "../../../components/TokenTracker"
 import { useWebSocketBidding } from "../../../hooks/use-ws-bidding"
+import { useRouter } from "next/navigation"
 
 export default function BidPage() {
   const { data: session } = useSession()
@@ -19,6 +20,8 @@ export default function BidPage() {
     isConnected,
     placeBid,
   } = useWebSocketBidding()
+
+  const router = useRouter(); 
 
   if (!session) {
     return (
@@ -42,6 +45,12 @@ export default function BidPage() {
               <h1 className="text-3xl font-bold text-black">🏗️ Construction Bidding Platform</h1>
               <p className="text-gray-600">Real-time material auctions</p>
             </div>
+            <button
+              onClick={() => router.push('/cart')}
+              className="bg-purple-600 text-white px-4 py-2 rounded"
+            >
+              View Cart
+            </button>
             <div className="flex items-center space-x-4">
               <div
                 className={`flex items-center space-x-2 px-3 py-1 rounded-full ${isConnected ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
@@ -102,7 +111,7 @@ export default function BidPage() {
               </div>
             )}
 
-            <TokenTracker/>
+            <TokenTracker />
           </div>
 
           {/* Bidding Interface */}
