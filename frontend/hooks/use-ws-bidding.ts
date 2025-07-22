@@ -66,6 +66,8 @@ export function useWebSocketBidding() {
 
     cleanup()
 
+    let connectionTimeout: NodeJS.Timeout
+    
     try {
       isConnectingRef.current = true
       // Connect to WebSocket server using environment variable

@@ -60,6 +60,26 @@ export default function TeamPage() {
   
         {/* Buttons */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-12">
+
+          
+            <button
+              onClick={() => router.push('/bid')}
+              className="bg-purple-600 text-white px-4 py-2 rounded"
+            >
+              Go to Bidding
+            </button>
+
+              <br>
+              </br>
+            <button
+              onClick={() => router.push('/cart')}
+              className="bg-purple-600 text-white px-4 py-2 rounded"
+            >
+              View cart
+            </button>
+         
+         <br>
+         </br>
           <button
             onClick={() => setShowCreateModal(true)}
             className="hover:scale-105 transition-transform"
