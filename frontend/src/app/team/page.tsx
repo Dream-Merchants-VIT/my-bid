@@ -5,6 +5,12 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Image from 'next/image';
+<<<<<<< HEAD
+=======
+import '@fontsource/press-start-2p'; // 8-bit style font similar to Minecraft
+
+
+>>>>>>> 58b6f3f5057946dee6df35e2e43f09c6e3e78e43
 
 export default function TeamPage() {
   const { data: session } = useSession();
@@ -38,6 +44,7 @@ export default function TeamPage() {
   };
 
   return (
+<<<<<<< HEAD
     <div
       className="min-h-screen flex items-center justify-center relative bg-repeat"
       style={{
@@ -56,6 +63,26 @@ export default function TeamPage() {
                 <li key={m.id}>{m.name}</li>
               ))}
             </ul>
+=======
+    <>
+      {/* Background */}
+      <div
+        className="w-screen h-screen relative bg-cover bg-no-repeat"
+        style={{ backgroundImage: "url('/assets/images/BCK.png')" }}
+      >
+        {/* Center Board */}
+        <div className="absolute top-10 left-1/2 transform -translate-x-1/2">
+          <Image src="/assets/images/board.png" alt="Board" width={500} height={100} />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <h1 className="text-white text-2xl font-mono text-center">
+              WELCOME TO THE BUILDERS HUB!!
+            </h1>
+          </div>
+        </div>
+  
+        {/* Buttons */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-12">
+>>>>>>> 58b6f3f5057946dee6df35e2e43f09c6e3e78e43
 
             <button
               onClick={() => router.push('/bid')}
@@ -70,6 +97,7 @@ export default function TeamPage() {
             >
               View Cart
             </button>
+<<<<<<< HEAD
             <br />
             <button
               onClick={handleLeave}
@@ -113,6 +141,67 @@ export default function TeamPage() {
       </div>
 
       {/* Create Modal */}
+=======
+         
+         <br>
+         </br>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="hover:scale-105 transition-transform"
+          >
+            <Image
+              src="/assets/images/create-team.png"
+              alt="Create Team"
+              width={150}
+              height={60}
+            />
+          </button>
+          <button
+            onClick={() => setShowJoinModal(true)}
+            className="hover:scale-105 transition-transform"
+          >
+            <Image
+              src="/assets/images/join-team.png"
+              alt="Join Team"
+              width={150}
+              height={60}
+            />
+          </button>
+        </div>
+  
+        {/* Decorative Mushrooms */}
+        <Image
+          src="/assets/images/mushroom.png"
+          alt="mushroom"
+          width={20}
+          height={20}
+          className="absolute bottom-10 left-10"
+        />
+        <Image
+          src="/assets/images/mushroom.png"
+          alt="mushroom"
+          width={20}
+          height={20}
+          className="absolute bottom-10 right-10"
+        />
+        <Image
+          src="/assets/images/mushroom.png"
+          alt="mushroom"
+          width={20}
+          height={20}
+          className="absolute top-10 right-10"
+        />
+        <Image
+          src="/assets/images/mushroom.png"
+          alt="mushroom"
+          width={20}
+          height={20}
+          className="absolute top-10 left-10"
+        />
+      </div>
+  
+      {/* Modals */}
+>>>>>>> 58b6f3f5057946dee6df35e2e43f09c6e3e78e43
       {showCreateModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
           <div className="bg-white p-4 rounded shadow-xl space-y-4 z-20">
@@ -124,18 +213,30 @@ export default function TeamPage() {
               className="border px-2 py-1 w-full"
             />
             <div className="flex justify-end space-x-2">
+<<<<<<< HEAD
               <button onClick={() => setShowCreateModal(false)} className="text-gray-500">
                 Cancel
               </button>
               <button onClick={handleCreate} className="bg-blue-600 text-white px-3 py-1 rounded">
+=======
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="text-gray-500"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCreate}
+                className="bg-blue-600 text-white px-3 py-1 rounded"
+              >
+>>>>>>> 58b6f3f5057946dee6df35e2e43f09c6e3e78e43
                 Confirm
               </button>
             </div>
           </div>
         </div>
       )}
-
-      {/* Join Modal */}
+  
       {showJoinModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
           <div className="bg-white p-4 rounded shadow-xl space-y-4 z-20">
@@ -147,16 +248,37 @@ export default function TeamPage() {
               className="border px-2 py-1 w-full"
             />
             <div className="flex justify-end space-x-2">
+<<<<<<< HEAD
               <button onClick={() => setShowJoinModal(false)} className="text-gray-500">
                 Cancel
               </button>
               <button onClick={handleJoin} className="bg-green-600 text-white px-3 py-1 rounded">
+=======
+              <button
+                onClick={() => setShowJoinModal(false)}
+                className="text-gray-500"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleJoin}
+                className="bg-green-600 text-white px-3 py-1 rounded"
+              >
+>>>>>>> 58b6f3f5057946dee6df35e2e43f09c6e3e78e43
                 Join
               </button>
             </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
+<<<<<<< HEAD
+=======
+  
+
+  
+  
+  
+>>>>>>> 58b6f3f5057946dee6df35e2e43f09c6e3e78e43
 }
