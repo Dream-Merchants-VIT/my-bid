@@ -16,3 +16,19 @@ export const teams = pgTable('teams', {
   ownerId: uuid('owner_id').notNull(),
   tokens: integer('tokens').notNull().default(1500),
 });
+
+export const items = pgTable('items', {
+  id: text('id').primaryKey(), 
+  name: text('name').notNull(),
+  smallBundlePrice: integer('small_bundle_price'),
+  largeBundlePrice: integer('large_bundle_price'),
+});
+
+export const wonItems = pgTable('won_items', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  teamId: uuid('team_id').notNull().references(() => teams.id),
+  itemId: text('item_id').notNull().references(() => items.id),
+  amountPurchased: integer('amount_purchased').notNull(),
+  baseAmount: integer('base_amount').notNull(),
+  quantity: integer('quantity').notNull(),
+})
