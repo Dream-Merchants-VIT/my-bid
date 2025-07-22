@@ -104,8 +104,11 @@ export default function AdminBidPage() {
                 <label className="block text-sm font-medium text-black mb-2">Total Bundles Available</label>
                 <input
                   type="number"
-                  value={totalBundles}
-                  onChange={(e) => setTotalBundles(Number.parseInt(e.target.value))}
+                  value={isNaN(totalBundles) ? "" : totalBundles}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setTotalBundles(value === "" ? 0 : parseInt(value));
+                  }}
                   min={1}
                   max={100}
                   className="w-full p-4 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
@@ -257,11 +260,10 @@ export default function AdminBidPage() {
                 {sortedBids.map((bid, index) => (
                   <div
                     key={bid.id}
-                    className={`p-4 rounded-lg border-2 transition-all duration-200 ${
-                      index === 0
+                    className={`p-4 rounded-lg border-2 transition-all duration-200 ${index === 0
                         ? "bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 shadow-md"
                         : "bg-gray-50 border-gray-200"
-                    }`}
+                      }`}
                   >
                     <div className="flex justify-between items-center">
                       <div>

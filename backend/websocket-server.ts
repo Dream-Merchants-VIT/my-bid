@@ -1,11 +1,15 @@
 import { WebSocketServer, WebSocket } from "ws"
 import { createServer } from "http"
 import { RAW_MATERIALS, BID_DURATION, INITIAL_TEAM_TOKENS } from "./lib/constants.js"
-import type { BiddingSession, Bid, TeamTokens } from "./types/index.js"
+import type { BiddingSession, Bid, TeamTokens } from "../types/index.js"
+import dotenv from "dotenv";
 import { Pool } from "pg"
 import { drizzle } from "drizzle-orm/node-postgres"
-import { eq, sql} from "drizzle-orm"
+import { eq, sql } from "drizzle-orm"
 import { teams as teamsTable } from "./lib/db/schema"
+import { wonItems } from "./lib/db/schema";
+
+dotenv.config();
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 const db = drizzle(pool)
@@ -192,30 +196,42 @@ class BiddingManager {
             tokens: sql`${teamsTable.tokens} - ${winningBid.amount}`,
           })
           .where(eq(teamsTable.id, winningBid.teamId))
+
+        const result = await db.insert(wonItems).values({
+          teamId: winningBid.teamId,
+          itemId: this.currentSession.materialId,
+          amountPurchased: winningBid.amount,
+          baseAmount: this.currentSession.basePrice,
+          quantity: 1,
+        }).returning();
+
+        console.log("✅ Won item inserted:", result)
+      } else {
+        console.log("⚠️ No winning bid to process.")
       }
 
-      this.broadcast({
-        type: "session_ended",
-        data: {
-          session: this.currentSession,
-          winningBid,
-          allBids: this.currentBids,
-          teamTokens: this.teamTokens,
-        },
-      })
+    this.broadcast({
+      type: "session_ended",
+      data: {
+        session: this.currentSession,
+        winningBid,
+        allBids: this.currentBids,
+        teamTokens: this.teamTokens,
+      },
+    })
 
-      console.log(`⏹️ Session ended: ${this.currentSession.id}`)
-    }
+    console.log(`⏹️ Session ended: ${this.currentSession.id}`)
   }
+}
 
-  getCurrentData() {
-    return {
-      session: this.currentSession,
-      bids: this.currentBids,
-      highestBid: this.getCurrentHighestBid(),
-      teamTokens: this.teamTokens,
-    }
+getCurrentData() {
+  return {
+    session: this.currentSession,
+    bids: this.currentBids,
+    highestBid: this.getCurrentHighestBid(),
+    teamTokens: this.teamTokens,
   }
+}
 }
 
 const biddingManager = new BiddingManager()
