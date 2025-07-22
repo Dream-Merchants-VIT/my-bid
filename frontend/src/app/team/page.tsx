@@ -1,14 +1,10 @@
-// app/team/page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Image from 'next/image';
-import '@fontsource/press-start-2p'; // 8-bit style font similar to Minecraft
-
-
 
 export default function TeamPage() {
   const { data: session } = useSession();
@@ -68,14 +64,12 @@ export default function TeamPage() {
             >
               Go to Bidding
             </button>
-
-              <br>
-              </br>
+            <br />
             <button
               onClick={() => router.push('/cart')}
               className="bg-purple-600 text-white px-4 py-2 rounded"
             >
-              View cart
+              View Cart
             </button>
          
          <br>
@@ -137,8 +131,8 @@ export default function TeamPage() {
   
       {/* Modals */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-4 rounded shadow-xl space-y-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+          <div className="bg-white p-4 rounded shadow-xl space-y-4 z-20">
             <h3 className="text-lg font-semibold">Enter Team Name</h3>
             <input
               type="text"
@@ -165,8 +159,8 @@ export default function TeamPage() {
       )}
   
       {showJoinModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-4 rounded shadow-xl space-y-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+          <div className="bg-white p-4 rounded shadow-xl space-y-4 z-20">
             <h3 className="text-lg font-semibold">Enter Team Code</h3>
             <input
               type="text"
