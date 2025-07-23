@@ -5,23 +5,28 @@ FROM node:20-alpine AS base
 FROM base AS deps
 WORKDIR /app
 
-# Copy package.json files for all packages that might have dependencies
-COPY frontend/package.json ./frontend/
-COPY packages/ ./packages/
+# Copy package.json files for all packages
+COPY frontend/package.json frontend/package-lock.json* ./frontend/
+COPY packages/db/package.json packages/db/package-lock.json* ./packages/db/
+COPY packages/common/ ./packages/common/  # in case common has dependencies too
 
-# Install dependencies for frontend (this should also install package dependencies if properly configured)
+# Install frontend dependencies
 WORKDIR /app/frontend
+RUN npm install
+
+# Install db package dependencies
+WORKDIR /app/packages/db
 RUN npm install
 
 # 3. Build Stage: Build the application
 FROM base AS builder
 WORKDIR /app
 
-# Copy installed node_modules and packages
+# Copy installed node_modules and source code
 COPY --from=deps /app/frontend/node_modules ./frontend/node_modules
 COPY --from=deps /app/packages/ ./packages/
 
-# Copy source code
+# Copy frontend source code
 COPY frontend/ ./frontend/
 
 WORKDIR /app/frontend
