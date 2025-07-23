@@ -3,12 +3,16 @@
 import { useEffect } from 'react';
 
 export default function RawMaterialsPage() {
+
   useEffect(() => {
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
-    return () => document.head.removeChild(link);
+
+    return () => {
+      document.head.removeChild(link);
+    };
   }, []);
 
   return (
