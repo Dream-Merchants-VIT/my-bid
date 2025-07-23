@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
-import type { BiddingSession, Bid, TeamTokens } from "../../types"
+import type { BiddingSession, Bid, TeamTokens } from "../../../types"
 
 interface BiddingInterfaceProps {
   currentSession: BiddingSession | null

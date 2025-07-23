@@ -38,158 +38,128 @@ export default function TeamPage() {
   };
 
   return (
-    <>
-      {/* Background */}
-      <div
-        className="w-screen h-screen relative bg-cover bg-no-repeat"
-        style={{ backgroundImage: "url('/assets/images/BCK.png')" }}
-      >
-        {/* Center Board */}
-        <div className="absolute top-10 left-1/2 transform -translate-x-1/2">
-          <Image src="/assets/images/board.png" alt="Board" width={500} height={100} />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <h1 className="text-white text-2xl font-mono text-center">
-              WELCOME TO THE BUILDERS HUB!!
-            </h1>
+    <div
+  className="min-h-screen flex items-center justify-center relative bg-repeat"
+  style={{
+    backgroundImage: "url('/assets/images/team-bg.png')",
+  }}
+>
+  <div className="p-8 border-8 border-[transparent] bg-[url('/assets/border.png')] bg-repeat rounded-xl shadow-xl">
+    {teamInfo ? (
+      <div className="flex flex-col items-center space-y-6 text-center bg-[#5e3c1c] p-6 rounded-xl border-4 border-[#3b2a1a] shadow-lg">
+        {/* Wooden Hanging Sign */}
+        <div className="bg-[#3b2a1a] text-white px-6 py-4 rounded shadow-inner border-4 border-[#a58d6f] relative">
+          <div className="absolute -top-8 left-1/2 -translate-x-1/2 flex gap-8">
+            <div className="w-2 h-8 bg-yellow-700 rounded-full"></div>
+            <div className="w-2 h-8 bg-yellow-700 rounded-full"></div>
           </div>
+          <h2 className="text-2xl font-bold font-mono">TEAM {teamInfo.name?.toUpperCase()}</h2>
+          <ul className="mt-2 space-y-1">
+            {teamInfo.members.map((m: any) => (
+              <li key={m.id} className="bg-[#a58d6f] text-black px-4 py-1 rounded font-semibold">
+                {m.name}
+              </li>
+            ))}
+          </ul>
         </div>
-  
-        {/* Buttons */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-12">
 
-          
-            <button
-              onClick={() => router.push('/bid')}
-              className="bg-purple-600 text-white px-4 py-2 rounded"
-            >
-              Go to Bidding
-            </button>
-            <br />
-            <button
-              onClick={() => router.push('/cart')}
-              className="bg-purple-600 text-white px-4 py-2 rounded"
-            >
-              View Cart
-            </button>
-         
-         <br>
-         </br>
+        {/* Action Buttons */}
+        <div className="flex flex-col space-y-3">
           <button
-            onClick={() => setShowCreateModal(true)}
-            className="hover:scale-105 transition-transform"
+            onClick={() => router.push('/bid')}
+            className="bg-[#463d36] hover:bg-[#62574e] text-white px-6 py-2 rounded shadow transition-all"
           >
-            <Image
-              src="/assets/images/create-team.png"
-              alt="Create Team"
-              width={150}
-              height={60}
-            />
+            GO TO BIDDING
           </button>
           <button
-            onClick={() => setShowJoinModal(true)}
-            className="hover:scale-105 transition-transform"
+            onClick={() => router.push('/cart')}
+            className="bg-[#463d36] hover:bg-[#62574e] text-white px-6 py-2 rounded shadow transition-all"
           >
-            <Image
-              src="/assets/images/join-team.png"
-              alt="Join Team"
-              width={150}
-              height={60}
-            />
+            VIEW CART
+          </button>
+          <button
+            onClick={handleLeave}
+            className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded shadow transition-all"
+          >
+            EXIT TEAM
           </button>
         </div>
-  
-        {/* Decorative Mushrooms */}
-        <Image
-          src="/assets/images/mushroom.png"
-          alt="mushroom"
-          width={20}
-          height={20}
-          className="absolute bottom-10 left-10"
-        />
-        <Image
-          src="/assets/images/mushroom.png"
-          alt="mushroom"
-          width={20}
-          height={20}
-          className="absolute bottom-10 right-10"
-        />
-        <Image
-          src="/assets/images/mushroom.png"
-          alt="mushroom"
-          width={20}
-          height={20}
-          className="absolute top-10 right-10"
-        />
-        <Image
-          src="/assets/images/mushroom.png"
-          alt="mushroom"
-          width={20}
-          height={20}
-          className="absolute top-10 left-10"
-        />
       </div>
-  
-      {/* Modals */}
-      {showCreateModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
-          <div className="bg-white p-4 rounded shadow-xl space-y-4 z-20">
-            <h3 className="text-lg font-semibold">Enter Team Name</h3>
-            <input
-              type="text"
-              value={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
-              className="border px-2 py-1 w-full"
-            />
-            <div className="flex justify-end space-x-2">
-              <button
-                onClick={() => setShowCreateModal(false)}
-                className="text-gray-500"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleCreate}
-                className="bg-blue-600 text-white px-3 py-1 rounded"
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-  
-      {showJoinModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
-          <div className="bg-white p-4 rounded shadow-xl space-y-4 z-20">
-            <h3 className="text-lg font-semibold">Enter Team Code</h3>
-            <input
-              type="text"
-              value={teamCode}
-              onChange={(e) => setTeamCode(e.target.value)}
-              className="border px-2 py-1 w-full"
-            />
-            <div className="flex justify-end space-x-2">
-              <button
-                onClick={() => setShowJoinModal(false)}
-                className="text-gray-500"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleJoin}
-                className="bg-green-600 text-white px-3 py-1 rounded"
-              >
-                Join
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-  
+    ) : (
+      <div className="relative text-center">
+        <h1 className="text-yellow-300 text-3xl font-mono bg-black p-4 inline-block rounded shadow-md mb-6">
+          WELCOME TO THE BUILDERS HUB!!
+        </h1>
 
-  
-  
-  
+        <div className="flex justify-center space-x-12">
+          <div className="cursor-pointer" onClick={() => setShowCreateModal(true)}>
+            <Image
+              src="/assets/images/create-button.png"
+              alt="Create Team"
+              width={100}
+              height={100}
+            />
+          </div>
+
+          <div className="cursor-pointer" onClick={() => setShowJoinModal(true)}>
+            <Image
+              src="/assets/images/join-button.png"
+              alt="Join Team"
+              width={100}
+              height={100}
+            />
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+
+  {/* Create Modal */}
+  {showCreateModal && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+      <div className="bg-white p-4 rounded shadow-xl space-y-4 z-20">
+        <h3 className="text-lg font-semibold">Enter Team Name</h3>
+        <input
+          type="text"
+          value={teamName}
+          onChange={(e) => setTeamName(e.target.value)}
+          className="border px-2 py-1 w-full"
+        />
+        <div className="flex justify-end space-x-2">
+          <button onClick={() => setShowCreateModal(false)} className="text-gray-500">
+            Cancel
+          </button>
+          <button onClick={handleCreate} className="bg-blue-600 text-white px-3 py-1 rounded">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {/* Join Modal */}
+  {showJoinModal && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+      <div className="bg-white p-4 rounded shadow-xl space-y-4 z-20">
+        <h3 className="text-lg font-semibold">Enter Team Code</h3>
+        <input
+          type="text"
+          value={teamCode}
+          onChange={(e) => setTeamCode(e.target.value)}
+          className="border px-2 py-1 w-full"
+        />
+        <div className="flex justify-end space-x-2">
+          <button onClick={() => setShowJoinModal(false)} className="text-gray-500">
+            Cancel
+          </button>
+          <button onClick={handleJoin} className="bg-green-600 text-white px-3 py-1 rounded">
+            Join
+          </button>
+        </div>
+      </div>
+    </div>
+  )}
+</div>
+
+  );
 }
