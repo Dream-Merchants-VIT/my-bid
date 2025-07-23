@@ -1,12 +1,8 @@
 import { NextResponse } from 'next/server';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { teams, participants } from '../../../../../../backend/lib/db/schema';
-import { auth } from '../../../../../auth';
-import { Pool } from 'pg';
+import { db, eq } from '@db/index';
+import { teams, participants } from '@db/schema';
+import { auth } from 'auth';
 import { randomUUID } from 'crypto';
-import { eq } from 'drizzle-orm';
-
-const db = drizzle(new Pool({ connectionString: process.env.DATABASE_URL }));
 
 export async function POST(req: Request) {
   const session = await auth();

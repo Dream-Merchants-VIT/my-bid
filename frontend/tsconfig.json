@@ -19,7 +19,8 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@db/*": ["../packages/db/*"]
     },
     "target": "ES2022"
   },

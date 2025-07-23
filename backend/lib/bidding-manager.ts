@@ -1,8 +1,7 @@
 import type { BiddingSession, Bid, TeamTokens } from "../../types"
 import { RAW_MATERIALS, BID_DURATION, LOW_STOCK_NOTIFICATIONS, INITIAL_TEAM_TOKENS } from "../lib/constants"
 import { broadcastToRoom } from "../lib/socket"
-import { teams } from "../lib/db/schema"
-import { wonItems } from "../lib/db/schema"
+import { teams, wonItems } from '@db/schema';
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { Pool } from 'pg'
 import { eq } from "drizzle-orm"

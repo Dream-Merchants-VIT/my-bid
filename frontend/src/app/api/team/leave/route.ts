@@ -1,12 +1,7 @@
-// app/api/team/leave/route.ts
 import { NextResponse } from 'next/server';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { participants } from '../../../../../../backend/lib/db/schema';
-import { auth } from '../../../../../auth';
-import { Pool } from 'pg';
-import { eq } from 'drizzle-orm';
-
-const db = drizzle(new Pool({ connectionString: process.env.DATABASE_URL }));
+import { db, eq } from '@db/index';
+import { participants } from '@db/schema';
+import { auth } from 'auth';
 
 export async function POST() {
   const session = await auth();

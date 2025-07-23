@@ -1,18 +1,14 @@
 services:
   frontend:
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile
+    image: ghcr.io/dream-merchants-vit/my-bid-frontend:latest
     ports:
       - "3000:3000"
     env_file:
-      - ./frontend/.env
+      - ./.env.frontend
 
   backend:
-    build:
-      context: .
-      dockerfile: backend/Dockerfile
+    image: ghcr.io/dream-merchants-vit/my-bid-backend:latest
     ports:
       - "3001:3001"
     env_file:
-      - ./backend/.env
+      - ./.env.backend

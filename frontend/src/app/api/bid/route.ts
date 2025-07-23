@@ -1,11 +1,6 @@
-// src/app/api/bid/route.ts
 import { NextResponse } from 'next/server'
-import { drizzle } from 'drizzle-orm/node-postgres'
-import { Pool } from 'pg'
-import { teams } from '../../../../../backend/lib/db/schema'
-import { eq } from 'drizzle-orm'
-
-const db = drizzle(new Pool({ connectionString: process.env.DATABASE_URL }));
+import { db, eq } from '@db/index'
+import { teams } from '@db/schema'
 
 export async function POST(req: Request) {
   const { teamId, bidAmount } = await req.json()

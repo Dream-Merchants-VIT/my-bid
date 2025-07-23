@@ -32,3 +32,17 @@ export const wonItems = pgTable('won_items', {
   baseAmount: integer('base_amount').notNull(),
   quantity: integer('quantity').notNull(),
 })
+
+
+export const schema = {
+  participants,
+  teams,
+  items,
+  wonItems,
+};
+
+
+export type Team = typeof teams.$inferSelect;
+export type Participant = typeof participants.$inferSelect;
+export type Item = typeof items.$inferSelect;
+export type WonItem = typeof wonItems.$inferSelect;

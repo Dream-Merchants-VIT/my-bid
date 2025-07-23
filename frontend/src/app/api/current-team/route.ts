@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/auth"
-import { Pool } from "pg";
-import { drizzle } from "drizzle-orm/node-postgres";
-import { participants, teams} from "../../../../../backend/lib/db/schema"
-import { eq } from "drizzle-orm"
-
-const db = drizzle(new Pool({ connectionString: process.env.DATABASE_URL }));
+import { db, eq } from "@db/index"
+import { participants, teams } from "@db/schema"
 
 export async function GET() {
   const session = await getServerSession(authOptions)

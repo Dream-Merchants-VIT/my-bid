@@ -1,14 +1,8 @@
-// src/app/api/cart/route.ts
-
 import { NextResponse } from "next/server"
-import { drizzle } from "drizzle-orm/node-postgres"
-import { Pool } from "pg"
-import { wonItems, items, participants } from "../../../../../backend/lib/db/schema"
-import { eq } from "drizzle-orm"
+import { db, eq } from '@db/index'
+import { wonItems, items, participants } from '@db/schema'
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/auth"
-
-const db = drizzle(new Pool({ connectionString: process.env.DATABASE_URL }))
 
 export async function GET() {
   try {

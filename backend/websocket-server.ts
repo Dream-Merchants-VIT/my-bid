@@ -6,8 +6,7 @@ import dotenv from "dotenv";
 import { Pool } from "pg"
 import { drizzle } from "drizzle-orm/node-postgres"
 import { eq, sql } from "drizzle-orm"
-import { teams as teamsTable } from "./lib/db/schema"
-import { wonItems } from "./lib/db/schema";
+import { teams as teamsTable, wonItems } from '@db/schema';
 
 dotenv.config();
 

@@ -3,31 +3,28 @@ FROM node:20-alpine AS base
 
 # 2. Dependencies Stage: Install dependencies
 FROM base AS deps
-
 WORKDIR /app
-
-COPY frontend/package.json frontend/package-lock.json* ./
+COPY frontend/package.json ./frontend/
+COPY packages/db/ ./packages/db/
+WORKDIR /app/frontend
 RUN npm install
 
 # 3. Build Stage: Build the application
 FROM base AS builder
-
 WORKDIR /app
-
-COPY --from=deps /app/node_modules ./node_modules
-COPY frontend/ .
-COPY types/ ./types
-
+COPY --from=deps /app/frontend/node_modules ./frontend/node_modules
+COPY --from=deps /app/packages/db/ ./packages/db/
+COPY frontend/ ./frontend/
+COPY types/ ./types/
+WORKDIR /app/frontend
 RUN npm run build
 
 # 4. Runner Stage: Final, smaller image for running the app
 FROM base AS runner
-
 WORKDIR /app
-
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-
+COPY --from=builder /app/frontend/public ./public
+COPY --from=builder /app/frontend/.next ./.next
+COPY --from=builder /app/frontend/node_modules ./node_modules
+COPY --from=builder /app/frontend/package.json ./package.json
+COPY --from=builder /app/packages/db/ ./packages/db
 CMD ["npm", "start"]

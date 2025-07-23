@@ -3,13 +3,14 @@ import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
-import { participants } from "../../backend/lib/db/schema";
 import { eq } from 'drizzle-orm';
+import { participants, schema } from '@db/schema';
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
-const db = drizzle(pool);
+
+const db = drizzle(pool, { schema });
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -26,19 +27,24 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user }) {
       if (!user.email) return false;
 
-      const existing = await db
-        .select()
-        .from(participants)
-        .where(eq(participants.email, user.email));
+      try {
+        const existing = await db
+          .select()
+          .from(participants)
+          .where(eq(participants.email, user.email));
 
-      if (existing.length === 0) {
-        await db.insert(participants).values({
-          name: user.name ?? '',
-          email: user.email,
-        });
+        if (existing.length === 0) {
+          await db.insert(participants).values({
+            name: user.name ?? '',
+            email: user.email,
+          });
+        }
+
+        return true;
+      } catch (error) {
+        console.error("Error in signIn callback:", error);
+        return false;
       }
-
-      return true;
     },
 
     async jwt({ token, user }) {
