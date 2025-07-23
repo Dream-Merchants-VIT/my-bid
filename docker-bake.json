@@ -9,12 +9,12 @@
   },
   "target": {
     "frontend": {
-      "context": "frontend",
-      "dockerfile": "Dockerfile"
+      "context": ".",
+      "dockerfile": "frontend/Dockerfile"
     },
     "backend": {
-      "context": "backend",
-      "dockerfile": "Dockerfile"
+      "context": ".",
+      "dockerfile": "backend/Dockerfile"
     }
   }
 }
