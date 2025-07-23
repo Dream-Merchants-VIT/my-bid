@@ -5,7 +5,7 @@ FROM node:20-alpine AS base
 FROM base AS deps
 WORKDIR /app
 COPY frontend/package.json ./frontend/
-COPY packages/db/ ./packages/db/
+COPY packages/ ./packages/
 WORKDIR /app/frontend
 RUN npm install
 
@@ -13,7 +13,7 @@ RUN npm install
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/frontend/node_modules ./frontend/node_modules
-COPY --from=deps /app/packages/db/ ./packages/db/
+COPY --from=deps /app/packages/ ./packages/
 COPY frontend/ ./frontend/
 COPY types/ ./types/
 WORKDIR /app/frontend
@@ -26,5 +26,5 @@ COPY --from=builder /app/frontend/public ./public
 COPY --from=builder /app/frontend/.next ./.next
 COPY --from=builder /app/frontend/node_modules ./node_modules
 COPY --from=builder /app/frontend/package.json ./package.json
-COPY --from=builder /app/packages/db/ ./packages/db
+COPY --from=builder /app/packages/ ./packages/
 CMD ["npm", "start"]

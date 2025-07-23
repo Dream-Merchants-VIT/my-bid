@@ -7,7 +7,7 @@ FROM base AS deps
 WORKDIR /app
 
 COPY backend/package.json backend/package-lock.json* ./backend/
-COPY packages/db/ ./packages/db/
+COPY packages/ ./packages/
 
 WORKDIR /app/backend
 RUN npm install --production
@@ -18,7 +18,7 @@ FROM base AS runner
 WORKDIR /app
 
 COPY --from=deps /app/backend/node_modules ./backend/node_modules
-COPY --from=deps /app/packages/db/ ./packages/db/
+COPY --from=deps /app/packages/ ./packages/
 COPY backend/ ./backend/
 COPY types/ ./types/
 
