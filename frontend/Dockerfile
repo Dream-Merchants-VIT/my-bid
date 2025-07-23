@@ -8,7 +8,7 @@ WORKDIR /app
 # Copy package.json files for all packages
 COPY frontend/package.json frontend/package-lock.json* ./frontend/
 COPY packages/db/package.json packages/db/package-lock.json* ./packages/db/
-COPY packages/common/ ./packages/common/  # in case common has dependencies too
+COPY packages/common/ ./packages/common/
 
 # Install frontend dependencies
 WORKDIR /app/frontend
