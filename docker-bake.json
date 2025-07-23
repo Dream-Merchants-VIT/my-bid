@@ -1,16 +1,19 @@
 {
   "group": {
     "default": {
-      "targets": ["frontend", "backend"]
+      "targets": [
+        "frontend",
+        "backend"
+      ]
     }
   },
   "target": {
     "frontend": {
-      "context": ".",
+      "context": "frontend",
       "dockerfile": "Dockerfile"
     },
     "backend": {
-      "context": ".",
+      "context": "backend",
       "dockerfile": "Dockerfile"
     }
   }
