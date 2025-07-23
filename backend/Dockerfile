@@ -20,7 +20,6 @@ WORKDIR /app
 COPY --from=deps /app/backend/node_modules ./backend/node_modules
 COPY --from=deps /app/packages/ ./packages/
 COPY backend/ ./backend/
-COPY types/ ./types/
 
 WORKDIR /app/backend
 CMD ["npm", "start"]

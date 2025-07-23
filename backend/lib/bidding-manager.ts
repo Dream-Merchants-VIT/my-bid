@@ -1,5 +1,5 @@
 import type { BiddingSession, Bid, TeamTokens } from "../../types"
-import { RAW_MATERIALS, BID_DURATION, LOW_STOCK_NOTIFICATIONS, INITIAL_TEAM_TOKENS } from "@common/index"
+import { RAW_MATERIALS, BID_DURATION, LOW_STOCK_NOTIFICATIONS, INITIAL_TEAM_TOKENS } from "@common/constants"
 import { broadcastToRoom } from "../lib/socket"
 import { teams, wonItems } from '@db/schema';
 import { drizzle } from 'drizzle-orm/node-postgres'

@@ -1,7 +1,7 @@
 import { WebSocketServer, WebSocket } from "ws"
 import { createServer } from "http"
-import { RAW_MATERIALS, BID_DURATION, INITIAL_TEAM_TOKENS } from "@common/index"
-import type { BiddingSession, Bid, TeamTokens } from "../types/index.js"
+import { RAW_MATERIALS, BID_DURATION, INITIAL_TEAM_TOKENS } from "@common/constants"
+import type { BiddingSession, Bid, TeamTokens } from "@common/types"
 import dotenv from "dotenv";
 import { Pool } from "pg"
 import { drizzle } from "drizzle-orm/node-postgres"

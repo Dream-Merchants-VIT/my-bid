@@ -15,7 +15,6 @@ WORKDIR /app
 COPY --from=deps /app/frontend/node_modules ./frontend/node_modules
 COPY --from=deps /app/packages/ ./packages/
 COPY frontend/ ./frontend/
-COPY types/ ./types/
 WORKDIR /app/frontend
 RUN npm run build
 

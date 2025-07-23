@@ -1,6 +1,6 @@
 "use client"
 
-import type { Bid } from "../../../types"
+import type { Bid } from "@common/types"
 
 interface BidHistoryProps {
   bids: Bid[]

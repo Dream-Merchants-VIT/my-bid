@@ -1,4 +1,4 @@
-import type { RawMaterial } from "../../../types/index"
+import type { RawMaterial } from "./types"
 
 export const RAW_MATERIALS: RawMaterial[] = [
   { id: "bricks", name: "Bricks", largeBundlePrice: 50, smallBundlePrice: 30 },
