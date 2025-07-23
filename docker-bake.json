@@ -1,0 +1,17 @@
+{
+  "group": {
+    "default": {
+      "targets": ["frontend", "backend"]
+    }
+  },
+  "target": {
+    "frontend": {
+      "context": ".",
+      "dockerfile": "Dockerfile"
+    },
+    "backend": {
+      "context": ".",
+      "dockerfile": "Dockerfile"
+    }
+  }
+}
