@@ -8,7 +8,8 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@db/*": ["../packages/db/*"]
+      "@db/*": ["../packages/db/*"],
+      "@common/*": ["../packages/common/src/*"]
     }
   }
 }

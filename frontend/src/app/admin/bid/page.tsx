@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { RAW_MATERIALS } from "../../../../../backend/lib/constants"
+import { RAW_MATERIALS } from "@common/index"
 import { useWebSocketBidding } from "../../../../hooks/use-ws-bidding"
 
 export default function AdminBidPage() {

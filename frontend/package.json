@@ -12,6 +12,7 @@
     "@fontsource/press-start-2p": "^5.2.6",
     "axios": "^1.9.0",
     "db": "file:../packages/db",
+    "common": "file:../packages/common",
     "drizzle-orm": "^0.44.3",
     "express": "^5.1.0",
     "lucide-react": "^0.515.0",

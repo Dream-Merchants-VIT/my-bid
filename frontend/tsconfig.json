@@ -20,7 +20,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@db/*": ["../packages/db/*"]
+      "@db/*": ["../packages/db/*"],
+      "@common/*": ["../packages/common/src/*"]
     },
     "target": "ES2022"
   },
