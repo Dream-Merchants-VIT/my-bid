@@ -20,7 +20,8 @@
     "next-auth": "^4.24.11",
     "pg": "^8.16.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "typescript": "^5.8.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -33,7 +34,6 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
     "postcss": "^8.5.4",
-    "tailwindcss": "^4.1.8",
-    "typescript": "^5.8.3"
+    "tailwindcss": "^4.1.8"
   }
 }

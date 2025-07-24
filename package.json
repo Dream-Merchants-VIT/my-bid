@@ -1,0 +1,9 @@
+{
+  "name": "my-bid",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "packages/*"
+  ]
+}
