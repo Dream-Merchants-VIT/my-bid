@@ -87,9 +87,10 @@ export default function TeamPage() {
       </div>
     ) : (
       <div className="relative text-center">
-        <h1 className="text-yellow-300 text-3xl font-mono bg-black p-4 inline-block rounded shadow-md mb-6">
-          WELCOME TO THE BUILDERS HUB!!
-        </h1>
+        <h1 className="text-yellow-300 text-3xl minecraft-font bg-[url('/assets/images/team/header-bg.png')] bg-cover bg-center p-10 inline-block rounded shadow-md mb-6">
+  WELCOME TO THE BUILDERS HUB!!
+</h1>
+
 
         <div className="flex justify-center space-x-12">
           <div className="cursor-pointer" onClick={() => setShowCreateModal(true)}>
@@ -116,7 +117,7 @@ export default function TeamPage() {
 
   {/* Create Modal */}
   {showCreateModal && (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+    <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-10">
       <div className="bg-white p-4 rounded shadow-xl space-y-4 z-20">
         <h3 className="text-lg font-semibold">Enter Team Name</h3>
         <input
@@ -139,7 +140,7 @@ export default function TeamPage() {
 
   {/* Join Modal */}
   {showJoinModal && (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+    <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-10">
       <div className="bg-white p-4 rounded shadow-xl space-y-4 z-20">
         <h3 className="text-lg font-semibold">Enter Team Code</h3>
         <input

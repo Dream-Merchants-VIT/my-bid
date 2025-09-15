@@ -27,3 +27,14 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@font-face{
+  font-family: 'Minecraft';
+  src: url('/assets/fonts/Minecraft.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.minecraft-font{
+  font-family: 'Minecraft',sans-serif;
+}
