@@ -4,10 +4,12 @@ import { useState } from "react";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
+  const router = useRouter();
 
   return (
     <div className="relative h-screen w-full">
@@ -123,9 +125,22 @@ export default function HomePage() {
 
         {/* Buttons */}
         <div className="mt-6 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-          <button className="bg-[#B17E41] px-6 py-3 text-black text-lg font-bold w-full md:w-auto">
-            Register Now →
-          </button>
+          {session ? (
+            <button
+              onClick={() => router.push("/bid")}
+              className="bg-[#B17E41] px-6 py-3 text-black text-lg font-bold w-full md:w-auto"
+            >
+              Go to Bid Page →
+            </button>
+          ) : (
+            <button
+              onClick={() => signIn("google")}
+              className="bg-[#B17E41] px-6 py-3 text-black text-lg font-bold w-full md:w-auto"
+            >
+              Register Now →
+            </button>
+          )}
+
           <button className="text-white border-white px-6 py-3 text-lg font-bold w-full md:w-auto">
             Learn More
           </button>
