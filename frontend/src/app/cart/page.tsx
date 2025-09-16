@@ -74,11 +74,13 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F1EBB5]">
-
+    <div
+  className="min-h-screen flex items-center justify-center bg-cover bg-center"
+  style={{ backgroundImage: "url('/assets/images/background.png')" }}
+>
       {/* Wooden Frame Container */}
       <div
-        className="relative w-[95%] max-w-5xl min-h-[80vh] p-4 flex flex-col items-center justify-start rounded-lg shadow-xl m-4"
+        className="relative w-[70%] max-w-5xl min-h-[80vh] p-4 flex flex-col items-center justify-start rounded-lg shadow-xl"
         style={{
           backgroundImage: "url('/assets/images/main-background.png')",
           backgroundSize: "cover",
@@ -98,7 +100,7 @@ export default function CartPage() {
 
         {/* Title */}
         <div
-          className="relative w-[70%] h-40 flex items-center justify-center mb-6"
+          className="relative w-[60%] h-40 flex items-center justify-center mb-6"
           style={{
             backgroundImage: "url('/assets/images/cart_page/header.png')",
             backgroundSize: "cover",
@@ -123,14 +125,20 @@ export default function CartPage() {
             </span>
           </div>
           <div className="grid grid-cols-3 gap-4 text-center">
-            <div className="bg-[#764A21]/52 p-4 rounded-lg shadow-inner text-3xl font-bold text-white minecraft-font">
-              {isNaN(tokens.available) ? "0" : tokens.available}
+            <div className="bg-[#764A21]/52 p-4 rounded-lg shadow-inner text-white minecraft-font tracking-wide">
+              <span className="text-lg">Available Tokens</span>
+              <br></br>
+              <span className="text-3xl font-bold">{isNaN(tokens.available) ? "0" : tokens.available}</span>
             </div>
-            <div className="bg-[#764A21]/52 p-4 rounded-lg shadow-inner text-3xl font-bold text-white minecraft-font">
-              {tokens.used}
+            <div className="bg-[#764A21]/52 p-4 rounded-lg shadow-inner text-white minecraft-font tracking-wide">
+              <span className="text-lg">Used Tokens</span>
+              <br></br>
+              <span className="text-3xl font-bold">{tokens.used}</span>
             </div>
-            <div className="bg-[#764A21]/52 p-4 rounded-lg shadow-inner text-3xl font-bold text-white minecraft-font">
-              {tokens.total}
+            <div className="bg-[#764A21]/52 p-4 rounded-lg shadow-inner text-white minecraft-font tracking-wide">
+              <span className="text-lg">Total Tokens</span>
+              <br></br>
+              <span className="text-3xl font-bold">{tokens.total}</span>
             </div>
           </div>
         </div>
@@ -157,8 +165,8 @@ export default function CartPage() {
                   key={item.id}
                   className="bg-[#764A21]/52 p-4 p-4 rounded-lg shadow-inner flex justify-between"
                 >
-                  <span className="font-bold text-white text-lg">{item.itemId || "Unnamed Item"}</span>
-                  <span className="font-bold text-white text-lg">${item.amountPurchased}</span>
+                  <span className="minecraft-font text-white text-lg">{item.itemId || "Unnamed Item"}</span>
+                  <span className="minecraft-font text-white text-lg">${item.amountPurchased}</span>
                 </div>
               ))}
             </div>
