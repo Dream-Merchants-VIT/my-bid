@@ -72,11 +72,11 @@ export default function BiddingInterface({ currentSession, highestBid, teamToken
 
   if (!currentSession) {
     return (
-      <div className="bg-white rounded-xl shadow-lg p-8">
+      <div className="bg-[#978056]/37 rounded-xl shadow-lg minecraft-font">
         <div className="text-center py-12">
-          <div className="text-6xl mb-4">⏳</div>
-          <h2 className="text-2xl font-semibold text-black mb-2">No Active Auction</h2>
-          <p className="text-gray-600">Wait for the admin to start a new bidding session</p>
+          <img src="/assets/images/bid/hourglass.png" className="h-64 w-64 mx-auto"></img>
+          <h2 className="text-4xl font-semibold text-[#FDE047] mb-2 tracking-widest text-outline-black">NO ACTIVE AUCTION</h2>
+          <p className="text-white">Wait for the admin to start a new bidding session</p>
         </div>
       </div>
     )
@@ -93,11 +93,11 @@ export default function BiddingInterface({ currentSession, highestBid, teamToken
   const minimumBid = highestBid ? highestBid.amount + 1 : currentSession.basePrice
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-8">
-      <h2 className="text-2xl font-semibold text-black mb-6">🎯 Place Your Bid</h2>
+    <div className="bg-[#978056]/37 rounded-xl shadow-lg p-8 minecraft-font">
+      <h2 className="text-2xl text-[#FDE047] font-semibold text-outline-black tracking-wide mb-6">PLACE YOUR BID</h2>
 
       {/* Current Team Info */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+      <div className="bg-[#FDE047]/20 border border-black rounded-lg p-4 mb-6">
         <div className="flex justify-between items-center">
           <div>
             <h3 className="font-semibold text-blue-800">{currentTeam.name}</h3>
@@ -112,7 +112,7 @@ export default function BiddingInterface({ currentSession, highestBid, teamToken
 
       {/* Current Highest Bid */}
       {highestBid && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+        <div className="bg-white/20 border border-green-200 rounded-lg p-4 mb-6">
           <h3 className="font-semibold text-green-800 mb-2">🏆 Current Highest Bid</h3>
           <div className="flex justify-between items-center">
             <div>
@@ -149,8 +149,8 @@ export default function BiddingInterface({ currentSession, highestBid, teamToken
             />
           </div>
           <div className="flex justify-between text-sm mt-2">
-            <span className="text-gray-600">Minimum: ₹{minimumBid}</span>
-            <span className="text-gray-600">Maximum: ₹{currentTeam.tokens}</span>
+            <span className="text-gray-white">Minimum: ₹{minimumBid}</span>
+            <span className="text-gray-white">Maximum: ₹{currentTeam.tokens}</span>
           </div>
         </div>
 
@@ -190,7 +190,7 @@ export default function BiddingInterface({ currentSession, highestBid, teamToken
       </div>
 
       {/* Rules */}
-      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+      {/* <div className="mt-6 p-4 bg-gray-50 rounded-lg">
         <h4 className="font-semibold text-black mb-2">📋 Bidding Rules</h4>
         <ul className="text-sm text-black space-y-1">
           <li>• Only team leaders can place bids</li>
@@ -199,7 +199,7 @@ export default function BiddingInterface({ currentSession, highestBid, teamToken
           <li>• You have 30 seconds per auction</li>
           <li>• Winning bid deducts tokens from your balance</li>
         </ul>
-      </div>
+      </div> */}
     </div>
   )
 }

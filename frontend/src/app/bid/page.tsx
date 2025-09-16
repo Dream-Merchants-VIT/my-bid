@@ -21,113 +21,144 @@ export default function BidPage() {
     placeBid,
   } = useWebSocketBidding()
 
-  const router = useRouter(); 
+  const router = useRouter();
 
   if (!session) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center bg-white p-8 rounded-xl shadow-lg">
+      <div
+        className="min-h-screen flex items-center justify-center bg-cover bg-center"
+        style={{ backgroundImage: "url('/assets/images/image1.png')" }}
+      >
+        <div
+          className="text-center p-8 rounded-xl shadow-lg bg-no-repeat bg-center"
+          style={{
+            backgroundImage: "url('/assets/images/image2.png')",
+            backgroundSize: "contain",
+          }}
+        >
           <div className="text-6xl mb-4">🔐</div>
-          <h1 className="text-3xl font-bold text-black mb-4">Authentication Required</h1>
-          <p className="text-gray-600">Please log in to access the bidding platform</p>
+          <h1 className="text-3xl text-yellow-400 minecraft-font tracking-wider mb-4 p-4 drop-shadow-lg">
+            Authentication Required
+          </h1>
+          <p className="text-yellow-300 minecraft-font tracking-wider">
+            Please log in to access the bidding platform
+          </p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-black">🏗️ Construction Bidding Platform</h1>
-              <p className="text-gray-600">Real-time material auctions</p>
-            </div>
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center minecraft-font"
+      style={{ backgroundImage: "url('/assets/images/background.png')" }}
+    >
+      {/* Wooden Frame Container */}
+      <div
+        className="relative w-[80%] max-w-5xl min-h-[80vh] p-4 flex flex-col items-center justify-start rounded-lg shadow-xl"
+        style={{
+          backgroundImage: "url('/assets/images/main-background.png')",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        }}
+      >
+        {/* Header */}
+        <div
+          className="w-[90%] p-8 m-5 flex justify-between items-center rounded-lg"
+          style={{
+            backgroundImage: "url('/assets/images/bid/header.png')",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          <h1 className="text-3xl text-[#F1EBB5] font-bold tracking-widest flex text-outline-brown items-center">
+            🏗️ CONSTRUCTION BIDDING PLATFORM
+          </h1>
+          <div className="flex items-center space-x-6">
             <button
               onClick={() => router.push('/cart')}
-              className="bg-purple-600 text-white px-4 py-2 rounded"
+              className="px-4 py-2 text-white rounded shadow-md hover:bg-purple-800"
+              style={{ backgroundImage: "url('/assets/images/bid/button.png')" }}
             >
-              View Cart
+              VIEW CART
             </button>
-            <div className="flex items-center space-x-4">
+            <div
+              className={`flex items-center space-x-2 px-3 py-1 border-2 rounded bg-[#978056]/37 ${isConnected ? "border-green-400" : "border-red-400"
+                }`}
+            >
               <div
-                className={`flex items-center space-x-2 px-3 py-1 rounded-full ${isConnected ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
-              >
-                <div
-                  className={`w-2 h-2 rounded-full ${isConnected ? "bg-green-500 animate-pulse" : "bg-red-500"}`}
-                ></div>
-                <span className="text-sm font-medium">{isConnected ? "Connected" : "Disconnected"}</span>
-              </div>
+                className={`w-3 h-3 rounded-full ${isConnected ? "bg-green-500 animate-pulse" : "bg-red-500"
+                  }`}
+              ></div>
+              <span className="text-sm">{isConnected ? "CONNECTED" : "DISCONNECTED"}</span>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Notifications */}
-        {notifications.length > 0 && (
-          <div className="mb-6 space-y-2">
-            {notifications.slice(-3).map((notification, index) => (
-              <div
-                key={index}
-                className="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 px-4 py-3 rounded-r-lg shadow-sm animate-pulse"
-              >
-                {notification}
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="container mx-4 px-4 py-8">
+          {/* Notifications */}
+          {notifications.length > 0 && (
+            <div className="mb-6 space-y-2">
+              {notifications.slice(-3).map((notification, index) => (
+                <div
+                  key={index}
+                  className="bg-yellow-900 border-2 text-white border-yellow-400 px-4 py-3 rounded shadow-md animate-pulse"
+                >
+                  {notification}
+                </div>
+              ))}
+            </div>
+          )}
 
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-          {/* Timer and Session Info */}
-          <div className="xl:col-span-1 space-y-6">
-            <Timer remainingTime={remainingTime} />
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 ml-6 mr-6">
 
-            {currentSession && (
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h2 className="text-xl font-semibold text-black mb-4">🎯 Current Auction</h2>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Material:</span>
-                    <span className="font-bold text-black">{currentSession.materialName}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Bundle:</span>
-                    <span className="font-bold text-black capitalize">{currentSession.bundleType}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Base Price:</span>
-                    <span className="font-bold text-green-600">₹{currentSession.basePrice}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Available:</span>
-                    <span className="font-bold text-orange-600">
-                      {currentSession.remainingBundles}/{currentSession.totalBundles}
-                    </span>
+            {/* Current Auction + Bidding Interface */}
+            <div className="xl:col-span-2 space-y-6">
+              {currentSession && (
+                <div className="border-2 border-yellow-500 rounded-lg p-2 bg-[#978056]/37 shadow-lg">
+                  <h2 className="text-xl font-bold mb-4">🎯 CURRENT AUCTION</h2>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span>Material:</span>
+                      <span className="font-bold">{currentSession.materialName}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Bundle:</span>
+                      <span className="font-bold capitalize">{currentSession.bundleType}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Base Price:</span>
+                      <span className="font-bold text-green-400">₹{currentSession.basePrice}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Available:</span>
+                      <span className="font-bold text-orange-400">
+                        {currentSession.remainingBundles}/{currentSession.totalBundles}
+                      </span>
+                    </div>
                   </div>
                 </div>
+              )}
+
+              <BiddingInterface
+                currentSession={currentSession}
+                highestBid={highestBid}
+                teamTokens={teamTokens}
+                placeBid={placeBid}
+              />
+            </div>
+
+            {/* Right side: Timer + Bid History */}
+            <div className="xl:col-span-1 flex flex-col space-y-6">
+              <Timer remainingTime={remainingTime} />
+
+              <div className="flex-1 overflow-y-auto max-h-[500px] rounded-lg p-2 shadow-lg">
+                <BidHistory bids={currentBids} />
               </div>
-            )}
-
-            <TokenTracker />
+            </div>
           </div>
 
-          {/* Bidding Interface */}
-          <div className="xl:col-span-2">
-            <BiddingInterface
-              currentSession={currentSession}
-              highestBid={highestBid}
-              teamTokens={teamTokens}
-              placeBid={placeBid}
-            />
-          </div>
-
-          {/* Bid History */}
-          <div className="xl:col-span-1">
-            <BidHistory bids={currentBids} />
-          </div>
         </div>
       </div>
     </div>

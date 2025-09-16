@@ -22,9 +22,11 @@ export default function Timer({ remainingTime }: TimerProps) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-xl font-semibold text-black mb-4 text-center">⏰ Time Remaining</h2>
-
+    <div className="bg-[#978056]/37 rounded-xl shadow-lg minecraft-font p-6">
+      <div className="flex items-center justify-center space-x-3">
+      <img src="/assets/images/bid/timer.png" className="w-8 h-8 mx-auto mb-4"></img>
+      <h2 className="text-xl font-semibold text-[#FDE047] text-outline-black mb-4 text-center tracking-widest">TIME REMAINING</h2>
+</div>
       {/* Circular Progress */}
       <div className="relative w-32 h-32 mx-auto mb-4">
         <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
@@ -35,7 +37,7 @@ export default function Timer({ remainingTime }: TimerProps) {
             stroke="currentColor"
             strokeWidth="8"
             fill="transparent"
-            className="text-gray-200"
+            className="text-[#573C17]"
           />
           <circle
             cx="50"
@@ -50,14 +52,14 @@ export default function Timer({ remainingTime }: TimerProps) {
             strokeLinecap="round"
           />
         </svg>
-        <div className={`absolute inset-0 flex items-center justify-center text-3xl font-bold ${getTimerColor()}`}>
+        <div className={`absolute inset-0 flex items-center justify-center text-3xl font-bold tracking-widest ${getTimerColor()}`}>
           {formatTime(remainingTime)}
         </div>
       </div>
 
       {remainingTime <= 10 && remainingTime > 0 && (
         <div className="text-center">
-          <span className="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-bold animate-pulse">
+          <span className="bg-red-100 text-[#573C17] px-4 py-2 rounded-full text-sm font-bold animate-pulse">
             ⚡ HURRY UP!
           </span>
         </div>
@@ -65,8 +67,8 @@ export default function Timer({ remainingTime }: TimerProps) {
 
       {remainingTime === 0 && (
         <div className="text-center">
-          <span className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full text-sm font-medium">
-            ⏸️ Waiting for next auction
+          <span className="text-white px-4 py-2 rounded-full text-sm font-medium">
+             Waiting for next auction
           </span>
         </div>
       )}

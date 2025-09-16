@@ -75,9 +75,9 @@ export default function CartPage() {
 
   return (
     <div
-  className="min-h-screen flex items-center justify-center bg-cover bg-center"
-  style={{ backgroundImage: "url('/assets/images/background.png')" }}
->
+      className="min-h-screen flex items-center justify-center bg-cover bg-center"
+      style={{ backgroundImage: "url('/assets/images/background.png')" }}
+    >
       {/* Wooden Frame Container */}
       <div
         className="relative w-[70%] max-w-5xl min-h-[80vh] p-4 flex flex-col items-center justify-start rounded-lg shadow-xl"
@@ -100,7 +100,7 @@ export default function CartPage() {
 
         {/* Title */}
         <div
-          className="relative w-[60%] h-40 flex items-center justify-center mb-6"
+          className="relative w-[60%] h-40 flex items-center justify-center mb-6 rounded-lg shadow"
           style={{
             backgroundImage: "url('/assets/images/cart_page/header.png')",
             backgroundSize: "cover",
@@ -108,12 +108,11 @@ export default function CartPage() {
           }}
         >
           <div className="flex items-center space-x-3">
-            <h1 className="text-6xl minecraft-font font-extrabold text-[#F1EBB5] px-4 py-1 rounded-lg tracking-wide">
+            <h1 className="text-5xl minecraft-font font-extrabold text-[#F1EBB5] px-4 py-1 rounded-lg tracking-wide text-outline-brown">
               MY CART
             </h1>
           </div>
         </div>
-
 
 
         {/* Token Balance Panel */}

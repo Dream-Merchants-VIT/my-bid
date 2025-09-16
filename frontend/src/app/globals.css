@@ -38,3 +38,14 @@ body {
 .minecraft-font{
   font-family: 'Minecraft',sans-serif;
 }
+
+.text-outline-black {
+  -webkit-text-stroke: 2px black;
+  paint-order: stroke fill;
+}
+
+.text-outline-brown {
+  -webkit-text-stroke: 3px #4E3016;
+  paint-order: stroke fill;
+}
+
