@@ -35,7 +35,12 @@ export default function HomePage() {
         <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
           <a href="#" className="hover:text-green-400">Home</a>
           <a href="#" className="hover:text-green-400">Schedule</a>
-          <a href="#" className="hover:text-green-400">Contact</a>
+          <button
+            onClick={() => router.push("/rules")}
+            className="hover:text-green-400"
+          >
+            Rules
+          </button>
           {session ? (
             <>
               <p className="text-sm">Hi, {session.user?.name}</p>
@@ -67,9 +72,8 @@ export default function HomePage() {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-3/4 sm:w-1/2 bg-black/90 text-white p-6 transform ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        } transition-transform duration-300 md:hidden`}
+        className={`fixed top-0 right-0 h-full w-3/4 sm:w-1/2 bg-black/90 text-white p-6 transform ${isOpen ? "translate-x-0" : "translate-x-full"
+          } transition-transform duration-300 md:hidden`}
       >
         <button
           className="absolute top-4 right-4 text-white"
@@ -81,7 +85,12 @@ export default function HomePage() {
         <div className="mt-10 flex flex-col space-y-6 text-lg">
           <a href="#" className="hover:text-green-400">Home</a>
           <a href="#" className="hover:text-green-400">Schedule</a>
-          <a href="#" className="hover:text-green-400">Contact</a>
+          <button
+            onClick={() => router.push("/rules")}
+            className="hover:text-green-400"
+          >
+            Rules
+          </button>
 
           {session ? (
             <>
