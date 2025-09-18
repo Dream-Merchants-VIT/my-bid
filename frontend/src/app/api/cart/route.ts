@@ -12,7 +12,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    // Fetch participant to get teamId
+    // Find participant to get their teamId
     const [participant] = await db
       .select()
       .from(participants)
@@ -29,7 +29,10 @@ export async function GET() {
         itemId: wonItems.itemId,
         baseAmount: wonItems.baseAmount,
         amountPurchased: wonItems.amountPurchased,
-        quantity: wonItems.quantity
+        quantity: wonItems.quantity,
+        itemName: items.name,
+        smallPrice: items.smallBundlePrice,
+        largePrice: items.largeBundlePrice,
       })
       .from(wonItems)
       .innerJoin(items, eq(wonItems.itemId, items.id))

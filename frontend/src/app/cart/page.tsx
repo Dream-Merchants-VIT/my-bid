@@ -9,6 +9,10 @@ interface CartItem {
   itemId: string;
   baseAmount: number;
   amountPurchased: number;
+  quantity: number;        // <-- from wonItems
+  itemName: string;        // <-- from items
+  smallPrice: number | null; // <-- from items
+  largePrice: number | null; // <-- from items
 }
 
 interface UserTokens {
@@ -159,15 +163,31 @@ export default function CartPage() {
             </div>
           ) : (
             <div className="space-y-4">
-              {cartItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-[#764A21]/52 p-4 p-4 rounded-lg shadow-inner flex justify-between"
-                >
-                  <span className="minecraft-font text-white text-lg">{item.itemId || "Unnamed Item"}</span>
-                  <span className="minecraft-font text-white text-lg">${item.amountPurchased}</span>
-                </div>
-              ))}
+              {cartItems.map((item) => {
+                let bundleType = "";
+                if (item.amountPurchased === item.smallPrice) {
+                  bundleType = "Small Bundle";
+                } else if (item.amountPurchased === item.largePrice) {
+                  bundleType = "Large Bundle";
+                }
+
+                return (
+                  <div
+                    key={item.id}
+                    className="bg-[#764A21]/52 p-4 rounded-lg shadow-inner flex justify-between items-center"
+                  >
+                    <div className="flex flex-col">
+                      <span className="minecraft-font text-white text-lg">{item.itemName}</span>
+                      <span className="minecraft-font text-sm text-yellow-300">
+                        {item.quantity} × {bundleType}
+                      </span>
+                    </div>
+                    <span className="minecraft-font text-white text-lg">
+                      ${item.amountPurchased}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
