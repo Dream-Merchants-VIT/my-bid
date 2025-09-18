@@ -24,5 +24,9 @@ export async function GET() {
     .from(participants)
     .where(eq(participants.teamId, user.teamId));
 
-  return NextResponse.json({ ...team, members });
+  return NextResponse.json({
+    ...team,
+    members,
+    participantId: user.id
+  });
 }

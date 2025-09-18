@@ -36,7 +36,17 @@ function BeforeTeamView({ onCreateClick, onJoinClick }: { onCreateClick: () => v
   );
 }
 
-function AfterTeamView({ teamInfo, onLeave, router }: { teamInfo: any; onLeave: () => void; router: any }) {
+function AfterTeamView({
+  teamInfo,
+  onLeave,
+  router,
+  session,
+}: {
+  teamInfo: any;
+  onLeave: () => void;
+  router: any;
+  session: any;
+}) {
   return (
     <div className="flex flex-col items-center space-y-6 text-center bg-[#5e3c1c] p-6 rounded-xl border-4 border-[#3b2a1a] shadow-lg">
       {/* Wooden Hanging Sign */}
@@ -62,12 +72,14 @@ function AfterTeamView({ teamInfo, onLeave, router }: { teamInfo: any; onLeave: 
 
       {/* Action Buttons */}
       <div className="flex flex-col space-y-3">
-        <button
-          onClick={() => router.push('/bid')}
-          className="bg-[#463d36] hover:bg-[#62574e] text-white px-6 py-2 rounded shadow transition-all"
-        >
-          GO TO BIDDING
-        </button>
+        {teamInfo.ownerId === teamInfo.participantId && (
+          <button
+            onClick={() => router.push('/bid')}
+            className="bg-[#463d36] hover:bg-[#62574e] text-white px-6 py-2 rounded shadow transition-all"
+          >
+            GO TO BIDDING
+          </button>
+        )}
         <button
           onClick={() => router.push('/cart')}
           className="bg-[#463d36] hover:bg-[#62574e] text-white px-6 py-2 rounded shadow transition-all"
@@ -124,7 +136,13 @@ export default function TeamPage() {
     >
       <div className="p-8 border-8 border-[transparent] bg-[url('/assets/border.png')] bg-repeat rounded-xl shadow-xl">
         {teamInfo ? (
-          <AfterTeamView teamInfo={teamInfo} onLeave={handleLeave} router={router} />
+          <AfterTeamView
+            teamInfo={teamInfo}
+            onLeave={handleLeave}
+            router={router}
+            session={session}
+          />
+
         ) : (
           <BeforeTeamView
             onCreateClick={() => setShowCreateModal(true)}
