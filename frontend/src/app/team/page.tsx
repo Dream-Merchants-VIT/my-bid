@@ -4,100 +4,9 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import Image from 'next/image';
+import BeforeTeamView from "../../../components/team/BeforeTeamView"
+import AfterTeamView from "../../../components/team/AfterTeamView"
 
-function BeforeTeamView({ onCreateClick, onJoinClick }: { onCreateClick: () => void; onJoinClick: () => void }) {
-  return (
-    <div className="relative text-center">
-      <h1 className="text-yellow-300 text-3xl minecraft-font bg-[url('/assets/images/team/header-bg.png')] bg-cover bg-center p-10 inline-block rounded shadow-md mb-6">
-        WELCOME TO THE BUILDERS HUB!!
-      </h1>
-
-      <div className="flex justify-center space-x-12">
-        <div className="cursor-pointer" onClick={onCreateClick}>
-          <Image
-            src="/assets/images/create-button.png"
-            alt="Create Team"
-            width={100}
-            height={100}
-          />
-        </div>
-
-        <div className="cursor-pointer" onClick={onJoinClick}>
-          <Image
-            src="/assets/images/join-button.png"
-            alt="Join Team"
-            width={100}
-            height={100}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function AfterTeamView({
-  teamInfo,
-  onLeave,
-  router,
-  session,
-}: {
-  teamInfo: any;
-  onLeave: () => void;
-  router: any;
-  session: any;
-}) {
-  return (
-    <div className="flex flex-col items-center space-y-6 text-center bg-[#5e3c1c] p-6 rounded-xl border-4 border-[#3b2a1a] shadow-lg">
-      {/* Wooden Hanging Sign */}
-      <div className="bg-[#3b2a1a] text-white px-6 py-4 rounded shadow-inner border-4 border-[#a58d6f] relative">
-        <div className="absolute -top-8 left-1/2 -translate-x-1/2 flex gap-8">
-          <div className="w-2 h-8 bg-yellow-700 rounded-full"></div>
-          <div className="w-2 h-8 bg-yellow-700 rounded-full"></div>
-        </div>
-        <h2 className="text-2xl font-bold font-mono">
-          TEAM {teamInfo.name?.toUpperCase()}
-        </h2>
-        <p className="text-yellow-300 font-semibold mt-1">
-          Code: {teamInfo.code}
-        </p>
-        <ul className="mt-2 space-y-1">
-          {teamInfo.members.map((m: any) => (
-            <li key={m.id} className="bg-[#a58d6f] text-black px-4 py-1 rounded font-semibold">
-              {m.name}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="flex flex-col space-y-3">
-        {teamInfo.ownerId === teamInfo.participantId && (
-          <button
-            onClick={() => router.push('/bid')}
-            className="bg-[#463d36] hover:bg-[#62574e] text-white px-6 py-2 rounded shadow transition-all"
-          >
-            GO TO BIDDING
-          </button>
-        )}
-        <button
-          onClick={() => router.push('/cart')}
-          className="bg-[#463d36] hover:bg-[#62574e] text-white px-6 py-2 rounded shadow transition-all"
-        >
-          VIEW CART
-        </button>
-        <button
-          onClick={onLeave}
-          className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded shadow transition-all"
-        >
-          EXIT TEAM
-        </button>
-      </div>
-    </div>
-  );
-}
-
-// ---------------- TEAM PAGE ----------------
 export default function TeamPage() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -111,6 +20,10 @@ export default function TeamPage() {
     const res = await axios.get('/api/team');
     setTeamInfo(res.data);
   };
+
+  useEffect(() => {
+    fetchTeam();
+  }, []);
 
   const handleCreate = async () => {
     await axios.post('/api/team/create', { name: teamName });
@@ -132,7 +45,7 @@ export default function TeamPage() {
   return (
     <div
       className="min-h-screen flex items-center justify-center relative bg-repeat"
-      style={{ backgroundImage: "url('/assets/images/team-bg.png')" }}
+      style={{ backgroundImage: "url('/assets/images/background.png')" }}
     >
       <div className="p-8 border-8 border-[transparent] bg-[url('/assets/border.png')] bg-repeat rounded-xl shadow-xl">
         {teamInfo ? (
@@ -140,9 +53,7 @@ export default function TeamPage() {
             teamInfo={teamInfo}
             onLeave={handleLeave}
             router={router}
-            session={session}
           />
-
         ) : (
           <BeforeTeamView
             onCreateClick={() => setShowCreateModal(true)}
