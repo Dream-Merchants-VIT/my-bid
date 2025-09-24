@@ -14,49 +14,63 @@ const buildingData = [
 
 export default function BuildingTypes() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 md:p-8 bg-cover bg-center" style={{ backgroundImage: 'url(/main-background.png)' }}>
-      <div className="text-center mb-6 w-full max-w-screen-lg px-4">
-        <Image src="/building-type.png" alt="Heading" width={600} height={100} className="w-full h-auto object-contain" />
-      </div>
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center"
+      style={{ backgroundImage: "url('/assets/images/background.png')" }}
+    >
+      {/* Wooden Frame Container */}
+      <div
+        className="relative w-[70%] max-w-5xl min-h-[80vh] p-4 flex flex-col items-center justify-start rounded-lg shadow-xl"
+        style={{
+          backgroundImage: "url('/assets/images/main-background.png')",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="text-center mb-6 w-full max-w-screen-lg px-4">
+          <Image src="/building-type.png" alt="Heading" width={600} height={100} className="w-full h-auto object-contain" />
+        </div>
 
-      <div className="w-full overflow-x-auto max-w-screen-lg border-4 border-yellow-900 p-4 sm:p-6" style={{ backgroundImage: 'url(/rectangle-background.png)', backgroundSize: 'cover', borderImage: 'url(/building-border.png) 30 stretch' }}>
-        <table className="min-w-[900px] text-xs sm:text-sm md:text-base lg:text-lg text-left text-yellow-100 font-mono">
-          <thead>
-            <tr className="uppercase text-yellow-300">
-              <th className="pr-4">Property</th>
-              <th className="pr-4">Bricks</th>
-              <th className="pr-4">Cement</th>
-              <th className="pr-4">Steel</th>
-              <th className="pr-4">Wood</th>
-              <th className="pr-4">Glass</th>
-              <th className="pr-4">Medical Supplies</th>
-              <th className="pr-4">Specialised Materials</th>
-              <th>Total Points</th>
-            </tr>
-          </thead>
-          <tbody>
-            {buildingData.map((item, index) => (
-              <tr key={index} className="text-yellow-100">
-                <td className="pr-4 py-1">{item.property}</td>
-                <td className="pr-4 py-1">{item.bricks}</td>
-                <td className="pr-4 py-1">{item.cement}</td>
-                <td className="pr-4 py-1">{item.steel}</td>
-                <td className="pr-4 py-1">{item.wood}</td>
-                <td className="pr-4 py-1">{item.glass}</td>
-                <td className="pr-4 py-1">{item.medical}</td>
-                <td className="pr-4 py-1">{item.materials}</td>
-                <td className="font-bold text-yellow-300">{item.points}</td>
+        <div className="w-full overflow-x-auto max-w-screen-lg border-4 border-yellow-900 p-4 sm:p-6" style={{ backgroundImage: 'url(/rectangle-background.png)', backgroundSize: 'cover', borderImage: 'url(/building-border.png) 30 stretch' }}>
+          <table className="min-w-[900px] text-xs sm:text-sm md:text-base lg:text-lg text-left text-yellow-100 font-mono">
+            <thead>
+              <tr className="uppercase text-yellow-300">
+                <th className="pr-4">Property</th>
+                <th className="pr-4">Bricks</th>
+                <th className="pr-4">Cement</th>
+                <th className="pr-4">Steel</th>
+                <th className="pr-4">Wood</th>
+                <th className="pr-4">Glass</th>
+                <th className="pr-4">Medical Supplies</th>
+                <th className="pr-4">Specialised Materials</th>
+                <th>Total Points</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {buildingData.map((item, index) => (
+                <tr key={index} className="text-yellow-100">
+                  <td className="pr-4 py-1">{item.property}</td>
+                  <td className="pr-4 py-1">{item.bricks}</td>
+                  <td className="pr-4 py-1">{item.cement}</td>
+                  <td className="pr-4 py-1">{item.steel}</td>
+                  <td className="pr-4 py-1">{item.wood}</td>
+                  <td className="pr-4 py-1">{item.glass}</td>
+                  <td className="pr-4 py-1">{item.medical}</td>
+                  <td className="pr-4 py-1">{item.materials}</td>
+                  <td className="font-bold text-yellow-300">{item.points}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-      <div className="mt-6">
-        <button className="flex items-center bg-yellow-900 text-yellow-100 px-4 py-2 rounded hover:bg-yellow-800 transition-all duration-200">
-          <Image src="/rule.png" alt="Back" width={20} height={20} className="mr-2" />
-          BACK TO RULES
-        </button>
+        <div className="mt-6">
+          <button className="flex items-center bg-yellow-900 text-yellow-100 px-4 py-2 rounded hover:bg-yellow-800 transition-all duration-200">
+            <Image src="/rule.png" alt="Back" width={20} height={20} className="mr-2" />
+            BACK TO RULES
+          </button>
+        </div>
       </div>
     </div>
   );

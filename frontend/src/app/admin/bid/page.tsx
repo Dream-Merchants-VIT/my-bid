@@ -93,10 +93,16 @@ export default function AdminBidPage() {
                   className="w-full p-4 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
                   disabled={!selectedMaterialData || currentSession?.isActive}
                 >
-                  {selectedMaterialData?.largeBundlePrice && (
-                    <option value="large">Large Bundle - ₹{selectedMaterialData.largeBundlePrice}</option>
+                  {selectedMaterialData?.smallBundlePrice && (
+                    <option value="small">
+                      Small Bundle - ₹{selectedMaterialData.smallBundlePrice}
+                    </option>
                   )}
-                  <option value="small">Small Bundle - ₹{selectedMaterialData?.smallBundlePrice}</option>
+                  {selectedMaterialData?.largeBundlePrice && (
+                    <option value="large">
+                      Large Bundle - ₹{selectedMaterialData.largeBundlePrice}
+                    </option>
+                  )}
                 </select>
               </div>
 
@@ -261,8 +267,8 @@ export default function AdminBidPage() {
                   <div
                     key={bid.id}
                     className={`p-4 rounded-lg border-2 transition-all duration-200 ${index === 0
-                        ? "bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 shadow-md"
-                        : "bg-gray-50 border-gray-200"
+                      ? "bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 shadow-md"
+                      : "bg-gray-50 border-gray-200"
                       }`}
                   >
                     <div className="flex justify-between items-center">
