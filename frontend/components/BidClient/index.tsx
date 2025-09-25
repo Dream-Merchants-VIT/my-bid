@@ -108,7 +108,7 @@ export default function BidClient() {
               {/* Current Auction + Bidding Interface */}
               <div className="xl:col-span-2 space-y-6">
                 {currentSession && (
-                  <div className="border-2 border-yellow-500 rounded-lg p-2 bg-[#978056]/37 shadow-lg">
+                  <div className="rounded-lg p-2 bg-[#978056]/37 shadow-lg">
                     <h2 className="text-xl font-bold mb-4">🎯 CURRENT AUCTION</h2>
                     <div className="space-y-3">
                       <div className="flex justify-between">

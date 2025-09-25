@@ -303,23 +303,38 @@ export default function AdminBidPage() {
         <div className="bg-white rounded-xl shadow-lg p-8 mt-8">
           <h2 className="text-2xl font-semibold text-black mb-6">📋 Material Price Reference</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {RAW_MATERIALS.map((material) => (
-              <div key={material.id} className="border border-gray-200 rounded-lg p-4">
-                <h3 className="font-semibold text-black mb-2">{material.name}</h3>
-                <div className="space-y-1 text-sm">
-                  {material.largeBundlePrice && (
+            {RAW_MATERIALS.map((material) => {
+              const isActive = currentSession?.materialId === material.id
+              const remaining = isActive ? currentSession.remainingBundles : null
+
+              return (
+                <div key={material.id} className="border border-gray-200 rounded-lg p-4">
+                  <h3 className="font-semibold text-black mb-2">{material.name}</h3>
+                  <div className="space-y-1 text-sm">
+                    {material.largeBundlePrice && (
+                      <div className="flex justify-between text-black">
+                        <span>Large Bundle:</span>
+                        <span className="font-bold text-green-600">₹{material.largeBundlePrice}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between text-black">
-                      <span>Large Bundle:</span>
-                      <span className="font-bold text-green-600">₹{material.largeBundlePrice}</span>
+                      <span>Small Bundle:</span>
+                      <span className="font-bold text-blue-600">₹{material.smallBundlePrice}</span>
                     </div>
-                  )}
-                  <div className="flex justify-between text-black">
-                    <span>Small Bundle:</span>
-                    <span className="font-bold text-blue-600">₹{material.smallBundlePrice}</span>
+                    <div className="flex justify-between text-black">
+                      <span>Small Bundles Left:</span>
+                      <span className="font-bold text-orange-600">
+                        {remaining !== null ? remaining : "—"}
+                      </span>
+                      <span>Large Bundles Left:</span>
+                      <span className="font-bold text-orange-600">
+                        {remaining !== null ? remaining : "—"}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </div>

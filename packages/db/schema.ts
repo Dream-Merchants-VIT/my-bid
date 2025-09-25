@@ -22,6 +22,8 @@ export const items = pgTable('items', {
   name: text('name').notNull(),
   smallBundlePrice: integer('small_bundle_price'),
   largeBundlePrice: integer('large_bundle_price'),
+  smallBundlesRemaining: integer('small_bundles_remaining').notNull().default(0),
+  largeBundlesRemaining: integer('large_bundles_remaining').notNull().default(0),
 });
 
 export const wonItems = pgTable('won_items', {

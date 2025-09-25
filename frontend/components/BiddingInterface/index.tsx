@@ -135,7 +135,7 @@ export default function BiddingInterface({ currentSession, highestBid, teamToken
       {/* Bidding Form */}
       <div className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-black mb-2">Your Bid Amount (Minimum: ₹{minimumBid})</label>
+          <label className="block text-lg font-medium text-black mb-2">Your Bid Amount (Minimum: ₹{minimumBid})</label>
           <div className="relative">
             <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold">₹</span>
             <input
