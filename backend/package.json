@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "tsx websocket-server.ts",
     "start": "NODE_ENV=production tsx websocket-server.ts",
+    "build": "echo No build step needed",
     "seed:items": "ts-node scripts/seed-items.ts"
   },
   "dependencies": {
