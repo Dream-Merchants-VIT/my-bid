@@ -44,7 +44,7 @@ export default function BiddingInterface({ currentSession, highestBid, teamToken
     if (!bidAmount || !currentSession || !currentTeam) return
 
     const amount = Number.parseInt(bidAmount)
-    const minimumBid = highestBid ? highestBid.amount + 1 : currentSession.basePrice
+    const minimumBid = highestBid ? highestBid.amount + 10 : currentSession.basePrice
 
     if (amount < minimumBid) {
       alert(`Your bid must be at least ₹${minimumBid}`)
@@ -90,7 +90,7 @@ export default function BiddingInterface({ currentSession, highestBid, teamToken
     )
   }
 
-  const minimumBid = highestBid ? highestBid.amount + 1 : currentSession.basePrice
+  const minimumBid = highestBid ? highestBid.amount + 10 : currentSession.basePrice
 
   return (
     <div className="bg-[#978056]/37 rounded-xl shadow-lg p-8 minecraft-font">
@@ -163,18 +163,18 @@ export default function BiddingInterface({ currentSession, highestBid, teamToken
             Min Bid
           </button>
           <button
-            onClick={() => setBidAmount((minimumBid + 50).toString())}
+            onClick={() => setBidAmount((minimumBid + 20).toString())}
             className="py-2 px-3 bg-gray-100 text-black rounded-lg hover:bg-gray-200 text-sm font-medium"
-            disabled={minimumBid + 50 > currentTeam.tokens}
+            disabled={minimumBid + 20 > currentTeam.tokens}
           >
-            +₹50
+            +₹20
           </button>
           <button
-            onClick={() => setBidAmount((minimumBid + 100).toString())}
+            onClick={() => setBidAmount((minimumBid + 40).toString())}
             className="py-2 px-3 bg-gray-100 text-black rounded-lg hover:bg-gray-200 text-sm font-medium"
-            disabled={minimumBid + 100 > currentTeam.tokens}
+            disabled={minimumBid + 40 > currentTeam.tokens}
           >
-            +₹100
+            +₹40
           </button>
         </div>
 

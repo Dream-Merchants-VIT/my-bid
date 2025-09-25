@@ -190,10 +190,13 @@ export default function CartPage() {
                   <div className="space-y-2">
                     {items.map((item) => {
                       let bundleType = "";
-                      if (item.quantity && item.quantity <= 50) {
+                      if (item.largePrice && item.amountPurchased >= item.largePrice) {
+                        bundleType = "Large Bundle";
+                      } else if (item.smallPrice && item.amountPurchased >= item.smallPrice) {
                         bundleType = "Small Bundle";
                       } else {
-                        bundleType = "Large Bundle";
+                        // Fallback: if no price match, determine by quantity or default to small
+                        bundleType = item.largePrice && item.quantity > 50 ? "Large Bundle" : "Small Bundle";
                       }
                       return (
                         <div
