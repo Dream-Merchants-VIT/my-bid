@@ -1,4 +1,5 @@
 "use client"
+/* eslint-disable react/no-unescaped-entities */
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -85,7 +86,7 @@ export default function RulesPage() {
                 </div>
 
                 {/* Buttons */}
-                <div className="flex gap-14">
+                {/* <div className="flex gap-14">
                         <button onClick={() => router.push("/rules/raw-materials")} className="flex items-center bg-yellow-900 text-yellow-100 px-4 py-2 rounded hover:bg-yellow-800 transition-all duration-200">
                             RAW MATERIALS
                         </button>
@@ -97,7 +98,7 @@ export default function RulesPage() {
                         <button onClick={() => router.push("/rules/cities")} className="flex items-center bg-yellow-900 text-yellow-100 px-4 py-2 rounded hover:bg-yellow-800 transition-all duration-200">
                             CITIES
                         </button>
-                </div>
+                </div> */}
             </div>
         </div>
     );

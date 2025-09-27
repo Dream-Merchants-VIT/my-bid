@@ -71,7 +71,7 @@ export default function TeamPage() {
               type="text"
               value={teamName}
               onChange={(e) => setTeamName(e.target.value)}
-              className="border px-2 py-1 w-full"
+              className="border px-2 py-1 w-full text-black"
             />
             <div className="flex justify-end space-x-2">
               <button onClick={() => setShowCreateModal(false)} className="text-gray-500">
@@ -94,7 +94,7 @@ export default function TeamPage() {
               type="text"
               value={teamCode}
               onChange={(e) => setTeamCode(e.target.value)}
-              className="border px-2 py-1 w-full"
+              className="border px-2 py-1 w-full text-black"
             />
             <div className="flex justify-end space-x-2">
               <button onClick={() => setShowJoinModal(false)} className="text-gray-500">

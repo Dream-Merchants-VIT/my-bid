@@ -20,8 +20,8 @@ export default function BeforeTeamView({
           <Image
             src="/assets/images/create-button.png"
             alt="Create Team"
-            width={100}
-            height={100}
+            width={150}
+            height={150}
           />
         </div>
 
@@ -29,8 +29,8 @@ export default function BeforeTeamView({
           <Image
             src="/assets/images/join-button.png"
             alt="Join Team"
-            width={100}
-            height={100}
+            width={150}
+            height={150}
           />
         </div>
       </div>
