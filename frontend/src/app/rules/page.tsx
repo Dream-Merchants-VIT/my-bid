@@ -26,7 +26,7 @@ export default function RulesPage() {
             >
                 {/* Heading */}
                 <div className="text-center mb-6 w-[40%] max-w-screen-sm px-4">
-                    <Image
+                    <img
                         src="/assets/images/rules/heading.png"
                         alt="Rules"
                         width={300}
