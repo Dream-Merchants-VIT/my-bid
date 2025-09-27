@@ -17,8 +17,8 @@ export default function BeforeTeamView({
 
       <div className="flex justify-center space-x-12">
         <div className="cursor-pointer" onClick={onCreateClick}>
-          <Image
-            src="/assets/images/create-button.png"
+          <img
+            src="/assets/images/team/create-button.png"
             alt="Create Team"
             width={150}
             height={150}
@@ -26,8 +26,8 @@ export default function BeforeTeamView({
         </div>
 
         <div className="cursor-pointer" onClick={onJoinClick}>
-          <Image
-            src="/assets/images/join-button.png"
+          <img
+            src="/assets/images/team/join-button.png"
             alt="Join Team"
             width={150}
             height={150}
