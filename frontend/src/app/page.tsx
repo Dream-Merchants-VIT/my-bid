@@ -34,7 +34,6 @@ export default function HomePage() {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
           <a href="#" className="hover:text-green-400">Home</a>
-          <a href="#" className="hover:text-green-400">Schedule</a>
           <button
             onClick={() => router.push("/rules")}
             className="hover:text-green-400"
@@ -127,10 +126,10 @@ export default function HomePage() {
           BRICKS <span className="minecraft-font text-yellow-500">BY BID</span>
         </h2>
 
-        <p className="mt-4 text-sm md:text-lg">
-          Tagline Here Tagline Here Tagline Idhar Dalo
+        <p className="mt-4 text-sm md:text-lg font-bold">
+          Trade Smart, Bid Bold, Build Big
         </p>
-        <p className="text-sm md:text-lg">Tagline here</p>
+        {/* <p className="text-sm md:text-lg">Tagline here</p> */}
 
         {/* Buttons */}
         <div className="mt-6 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
@@ -149,10 +148,6 @@ export default function HomePage() {
               Register Now →
             </button>
           )}
-
-          <button className="text-white border-white px-6 py-3 text-lg font-bold w-full md:w-auto">
-            Learn More
-          </button>
         </div>
       </div>
     </div>
