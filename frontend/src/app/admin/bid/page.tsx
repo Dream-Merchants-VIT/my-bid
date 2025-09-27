@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { RAW_MATERIALS } from "@common/constants"
 import { useWebSocketBidding } from "../../../../hooks/use-ws-bidding"
+import { useEffect } from "react"
 
 export default function AdminBidPage() {
   const [selectedMaterial, setSelectedMaterial] = useState("")
@@ -38,6 +39,20 @@ export default function AdminBidPage() {
   }
 
   const selectedMaterialData = RAW_MATERIALS.find((m) => m.id === selectedMaterial)
+  useEffect(() => {
+    if (selectedMaterialData) {
+      // If previously selected bundleType is invalid, reset to a valid one
+      if (selectedMaterialData.largeBundlePrice && selectedMaterialData.smallBundlePrice) {
+        // keep current selection or default to large
+        setBundleType((prev) => (prev === "large" || prev === "small" ? prev : "large"))
+      } else if (selectedMaterialData.largeBundlePrice) {
+        setBundleType("large")
+      } else if (selectedMaterialData.smallBundlePrice) {
+        setBundleType("small")
+      }
+    }
+  }, [selectedMaterial])
+
   const sortedBids = [...currentBids].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
   const highestBid = sortedBids[0] || null
 
@@ -93,15 +108,11 @@ export default function AdminBidPage() {
                   className="w-full p-4 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black bg-white"
                   disabled={!selectedMaterialData || currentSession?.isActive}
                 >
-                  {selectedMaterialData?.smallBundlePrice && (
-                    <option value="small">
-                      Small Bundle - ₹{selectedMaterialData.smallBundlePrice}
-                    </option>
-                  )}
                   {selectedMaterialData?.largeBundlePrice && (
-                    <option value="large">
-                      Large Bundle - ₹{selectedMaterialData.largeBundlePrice}
-                    </option>
+                    <option value="large">Large Bundle - ₹{selectedMaterialData.largeBundlePrice}</option>
+                  )}
+                  {selectedMaterialData?.smallBundlePrice && (
+                    <option value="small">Small Bundle - ₹{selectedMaterialData.smallBundlePrice}</option>
                   )}
                 </select>
               </div>

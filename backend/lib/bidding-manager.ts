@@ -35,7 +35,7 @@ class BiddingManager {
     }
 
     const basePrice = bundleType === "large" ? material.largeBundlePrice : material.smallBundlePrice
-    if (!basePrice) {
+    if (basePrice == null) {
       throw new Error("Invalid bundle type for this material")
     }
 
